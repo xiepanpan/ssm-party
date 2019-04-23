@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baobao.common.mapping.ActivityJoinMapper">
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.ActivityJoin">
+    <id column="activity_join_id" jdbcType="INTEGER" property="activityJoinId" />
+    <result column="activity_join_user_id" jdbcType="INTEGER" property="activityJoinUserId" />
+    <result column="activity_join_belong" jdbcType="INTEGER" property="activityJoinBelong" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    activity_join_id, activity_join_user_id, activity_join_belong
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from activity_join
+    where activity_join_id = #{activityJoinId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from activity_join
+    where activity_join_id = #{activityJoinId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.ActivityJoin">
+    insert into activity_join (activity_join_id, activity_join_user_id, 
+      activity_join_belong)
+    values (#{activityJoinId,jdbcType=INTEGER}, #{activityJoinUserId,jdbcType=INTEGER}, 
+      #{activityJoinBelong,jdbcType=INTEGER})
+  </insert>
+  <insert id="addJoin" >
+    insert into activity_join ( activity_join_user_id, 
+      activity_join_belong)
+    values 
+    <foreach collection="userIds" separator="," item="id">
+    ( #{id,jdbcType=INTEGER}, 
+      #{actId,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.ActivityJoin">
+    insert into activity_join
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="activityJoinId != null">
+        activity_join_id,
+      </if>
+      <if test="activityJoinUserId != null">
+        activity_join_user_id,
+      </if>
+      <if test="activityJoinBelong != null">
+        activity_join_belong,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="activityJoinId != null">
+        #{activityJoinId,jdbcType=INTEGER},
+      </if>
+      <if test="activityJoinUserId != null">
+        #{activityJoinUserId,jdbcType=INTEGER},
+      </if>
+      <if test="activityJoinBelong != null">
+        #{activityJoinBelong,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.ActivityJoin">
+    update activity_join
+    <set>
+      <if test="activityJoinUserId != null">
+        activity_join_user_id = #{activityJoinUserId,jdbcType=INTEGER},
+      </if>
+      <if test="activityJoinBelong != null">
+        activity_join_belong = #{activityJoinBelong,jdbcType=INTEGER},
+      </if>
+    </set>
+    where activity_join_id = #{activityJoinId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.ActivityJoin">
+    update activity_join
+    set activity_join_user_id = #{activityJoinUserId,jdbcType=INTEGER},
+      activity_join_belong = #{activityJoinBelong,jdbcType=INTEGER}
+    where activity_join_id = #{activityJoinId,jdbcType=INTEGER}
+  </update>
+</mapper>

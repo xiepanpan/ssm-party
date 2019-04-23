@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baobao.common.mapping.ActivityMapper">
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.Activity">
+    <id column="activity_id" jdbcType="INTEGER" property="activityId" />
+    <result column="activity_name" jdbcType="VARCHAR" property="activityName" />
+    <result column="activity_content" jdbcType="VARCHAR" property="activityContent" />
+    <result column="activity_start_time" jdbcType="TIMESTAMP" property="activityStartTime" />
+    <result column="activity_end_time" jdbcType="TIMESTAMP" property="activityEndTime" />
+    <result column="activity_address" jdbcType="VARCHAR" property="activityAddress" />
+    <result column="activity_sign" jdbcType="TINYINT" property="activitySign" />
+    <result column="activity_create_user_id" jdbcType="INTEGER" property="activityCreateUserId" />
+    <result column="activity_state" jdbcType="INTEGER" property="activityState" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    activity_id, activity_name, activity_content, activity_start_time, activity_end_time, 
+    activity_address, activity_sign, activity_create_user_id, activity_state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from activity
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from activity
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.Activity">
+    insert into activity (activity_id, activity_name, activity_content, 
+      activity_start_time, activity_end_time, 
+      activity_address, activity_sign, activity_create_user_id, 
+      activity_state)
+    values (#{activityId,jdbcType=INTEGER}, #{activityName,jdbcType=VARCHAR}, #{activityContent,jdbcType=VARCHAR}, 
+      #{activityStartTime,jdbcType=TIMESTAMP}, #{activityEndTime,jdbcType=TIMESTAMP}, 
+      #{activityAddress,jdbcType=VARCHAR}, #{activitySign,jdbcType=TINYINT}, #{activityCreateUserId,jdbcType=INTEGER}, 
+      #{activityState,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.Activity">
+    insert into activity
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="activityId != null">
+        activity_id,
+      </if>
+      <if test="activityName != null">
+        activity_name,
+      </if>
+      <if test="activityContent != null">
+        activity_content,
+      </if>
+      <if test="activityStartTime != null">
+        activity_start_time,
+      </if>
+      <if test="activityEndTime != null">
+        activity_end_time,
+      </if>
+      <if test="activityAddress != null">
+        activity_address,
+      </if>
+      <if test="activitySign != null">
+        activity_sign,
+      </if>
+      <if test="activityCreateUserId != null">
+        activity_create_user_id,
+      </if>
+      <if test="activityState != null">
+        activity_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="activityId != null">
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="activityName != null">
+        #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="activityContent != null">
+        #{activityContent,jdbcType=VARCHAR},
+      </if>
+      <if test="activityStartTime != null">
+        #{activityStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityEndTime != null">
+        #{activityEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityAddress != null">
+        #{activityAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="activitySign != null">
+        #{activitySign,jdbcType=TINYINT},
+      </if>
+      <if test="activityCreateUserId != null">
+        #{activityCreateUserId,jdbcType=INTEGER},
+      </if>
+      <if test="activityState != null">
+        #{activityState,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.Activity">
+    update activity
+    <set>
+      <if test="activityName != null">
+        activity_name = #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="activityContent != null">
+        activity_content = #{activityContent,jdbcType=VARCHAR},
+      </if>
+      <if test="activityStartTime != null">
+        activity_start_time = #{activityStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityEndTime != null">
+        activity_end_time = #{activityEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityAddress != null">
+        activity_address = #{activityAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="activitySign != null">
+        activity_sign = #{activitySign,jdbcType=TINYINT},
+      </if>
+      <if test="activityCreateUserId != null">
+        activity_create_user_id = #{activityCreateUserId,jdbcType=INTEGER},
+      </if>
+      <if test="activityState != null">
+        activity_state = #{activityState,jdbcType=INTEGER},
+      </if>
+    </set>
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.Activity">
+    update activity
+    set activity_name = #{activityName,jdbcType=VARCHAR},
+      activity_content = #{activityContent,jdbcType=VARCHAR},
+      activity_start_time = #{activityStartTime,jdbcType=TIMESTAMP},
+      activity_end_time = #{activityEndTime,jdbcType=TIMESTAMP},
+      activity_address = #{activityAddress,jdbcType=VARCHAR},
+      activity_sign = #{activitySign,jdbcType=TINYINT},
+      activity_create_user_id = #{activityCreateUserId,jdbcType=INTEGER},
+      activity_state = #{activityState,jdbcType=INTEGER}
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+  
+  
+  <!-- app数据获取 -->
+	<resultMap type="com.baobao.common.model.andshow.ActList" id="actList">
+		<id property="actId" column="activity_id" jdbcType="INTEGER" />
+		<result property="actContent" column="activity_content"
+			jdbcType="VARCHAR" />
+		<result property="actStartTime" column="activity_start_time"
+			jdbcType="DATE" />
+		<collection property="branNames" ofType="java.lang.String">
+			<result column="branch_name" jdbcType="VARCHAR" />
+		</collection>
+		<collection property="typeNames" ofType="java.lang.String">
+			<result column="activity_type_name" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+	
+	
+	<resultMap type="com.baobao.common.model.andshow.FinishedActList" id="FinishedActList" extends="actList">
+		<result property="goodNumber" column="good_number" jdbcType="INTEGER"/>
+		<result property="commentNumber" column="comment_number" jdbcType="INTEGER"/>
+	 </resultMap>
+
+
+	<resultMap type="com.baobao.common.model.andshow.NewActList" id="NewActList">
+		<result column="activity_id" jdbcType="INTEGER" property="actId" />
+		<result column="activity_state" jdbcType="INTEGER" property="actState" />
+		<result column="member_name" jdbcType="VARCHAR" property="createName"/>
+		<result column="activity_name" jdbcType="VARCHAR" property="actName" />
+		<result column="activity_content" jdbcType="VARCHAR" property="actContent" />
+		<result column="activity_start_time" jdbcType="TIMESTAMP"
+			property="actStartTime" />
+		<result column="activity_end_time" jdbcType="TIMESTAMP"
+			property="actEndTime" />
+		<result column="activity_address" jdbcType="VARCHAR" property="actAddress" />
+		<result column="good_number" jdbcType="VARCHAR" property="goodNumber" />
+		<result column="good_state" jdbcType="VARCHAR" property="goodState" />
+		<result column="comment_number" jdbcType="VARCHAR" property="commentNumber" />
+		<result column="collect_state" jdbcType="VARCHAR" property="collectState" />
+		<result column="collect_number" jdbcType="VARCHAR" property="collectNumber" />
+		<collection property="branNames" ofType="java.lang.String">
+			<result column="branch_name" jdbcType="VARCHAR" />
+		</collection>
+		<collection property="typeNames" ofType="java.lang.String">
+			<result column="activity_type_name" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+
+
+
+
+
+
+	<sql id="Base_List">
+		activity.activity_id,member_name,activity_name,activity_content,activity_start_time,activity_end_time,
+		case when activity_state = 0 and activity_start_time &gt;now() then -1 when activity_state = 0 and activity_start_time &lt;now() then 0 else 1 end as activity_state
+		,activity_address,good_state,IFNULL(collect_number, 0) AS collect_number,IFNULL(good_number,0) as good_number,IFNULL(comment_number,0) as comment_number,collect_state,branch_name,activity_type_name
+	</sql>
+
+	<sql id="Condition">
+		<where>
+			activity_state = 1
+			<if test="userId !=null">
+				and (activity_join_user_id = #{userId,jdbcType=INTEGER} or activity_create_user_id = #{userId,jdbcType=INTEGER})
+			</if>
+			<if test="typeId !=null and typeId !=-1">
+				and type_id = #{typeId,jdbcType=INTEGER}
+			</if>
+		</where>
+	</sql>
+	
+	<select id="getFinishedActList" parameterType="com.baobao.common.cmd.ActCmd"
+		resultMap="NewActList">
+		select
+		<include refid="Base_List"></include>
+		FROM
+	activity
+LEFT JOIN member_tab on activity_create_user_id = member_id 
+LEFT JOIN activity_branch ON activity_branch_belong = activity_id
+LEFT JOIN branch ON activity_branch_id = branch_id
+LEFT JOIN act_type_relation ON act_id = activity_id
+LEFT JOIN activity_type ON type_id = activity_type_id
+LEFT JOIN activity_join ON activity_join_belong = activity_id
+LEFT JOIN (
+	SELECT
+		count(good_id) AS good_number,
+		good_object_id
+	FROM
+		good
+	GROUP BY
+		good_object_id
+) AS good_tab ON good_tab.good_object_id = activity_id
+LEFT JOIN (
+	SELECT
+		count(collection_tab.collection_id) AS collect_number,
+		collection_object_id
+	FROM
+		collection_tab
+	GROUP BY
+		collection_object_id
+) AS col_tab ON col_tab.collection_object_id = activity_id
+LEFT JOIN (
+	SELECT
+		COUNT(comment_id) AS comment_number,
+		comment_object_id
+	FROM
+		`comment`
+	GROUP BY
+		comment_object_id
+) AS comemnt_tab ON comment_object_id = activity_id
+LEFT JOIN (
+	SELECT
+		CASE
+	WHEN collection_object_id IS NOT NULL THEN
+		1
+	ELSE
+		0
+	END AS collect_state,
+	activity_id
+FROM
+	activity
+LEFT JOIN (
+	SELECT
+		*
+	FROM
+		collection_tab
+	WHERE
+		collection_user_id = #{userId}
+) AS collection ON activity_id = collection_object_id
+) AS coll_tab ON activity.activity_id = coll_tab.activity_id
+LEFT JOIN (
+	SELECT
+		CASE
+	WHEN good_object_id IS NOT NULL THEN
+		1
+	ELSE
+		0
+	END AS good_state,
+	activity_id
+FROM
+	activity
+LEFT JOIN (
+	SELECT
+		*
+	FROM
+		good
+	WHERE
+		good_user_id = #{userId}
+) AS good_tab ON activity_id = good_object_id
+) AS good_state_tab ON good_state_tab.activity_id = activity.activity_id
+		<include refid="Condition"></include>
+	</select>
+
+	<select id="getDoingActList" parameterType="java.lang.Integer"
+		resultMap="NewActList">
+		select
+		<include refid="Base_List"></include>
+		FROM
+	activity
+LEFT JOIN member_tab on activity_create_user_id = member_id 
+LEFT JOIN activity_branch ON activity_branch_belong = activity_id
+LEFT JOIN branch ON activity_branch_id = branch_id
+LEFT JOIN act_type_relation ON act_id = activity_id
+LEFT JOIN activity_type ON type_id = activity_type_id
+LEFT JOIN activity_join ON activity_join_belong = activity_id
+LEFT JOIN (
+	SELECT
+		count(good_id) AS good_number,
+		good_object_id
+	FROM
+		good
+	GROUP BY
+		good_object_id
+) AS good_tab ON good_tab.good_object_id = activity_id
+LEFT JOIN (
+	SELECT
+		count(collection_tab.collection_id) AS collect_number,
+		collection_object_id
+	FROM
+		collection_tab
+	GROUP BY
+		collection_object_id
+) AS col_tab ON col_tab.collection_object_id = activity_id
+LEFT JOIN (
+	SELECT
+		COUNT(comment_id) AS comment_number,
+		comment_object_id
+	FROM
+		`comment`
+	GROUP BY
+		comment_object_id
+) AS comemnt_tab ON comment_object_id = activity_id
+LEFT JOIN (
+	SELECT
+		CASE
+	WHEN collection_object_id IS NOT NULL THEN
+		1
+	ELSE
+		0
+	END AS collect_state,
+	activity_id
+FROM
+	activity
+LEFT JOIN (
+	SELECT
+		*
+	FROM
+		collection_tab
+	WHERE
+		collection_user_id = #{userId}
+) AS collection ON activity_id = collection_object_id
+) AS coll_tab ON activity.activity_id = coll_tab.activity_id
+LEFT JOIN (
+	SELECT
+		CASE
+	WHEN good_object_id IS NOT NULL THEN
+		1
+	ELSE
+		0
+	END AS good_state,
+	activity_id
+FROM
+	activity
+LEFT JOIN (
+	SELECT
+		*
+	FROM
+		good
+	WHERE
+		good_user_id = #{userId}
+) AS good_tab ON activity_id = good_object_id
+) AS good_state_tab ON good_state_tab.activity_id = activity.activity_id
+		where activity_state = 0 and (activity_join_user_id = #{userId,jdbcType=INTEGER} or activity_create_user_id = #{userId,jdbcType=INTEGER})
+	</select>
+	
+	
+
+
+	<!-- 活动详情 -->
+	<resultMap type="com.baobao.common.model.andshow.ActDetail"
+		id="Act_Detail">
+		<result column="activity_id" jdbcType="INTEGER" property="actId" />
+		<result column="activity_name" jdbcType="VARCHAR" property="name" />
+		<result column="activity_content" jdbcType="VARCHAR" property="content" />
+		<result column="activity_start_time" jdbcType="TIMESTAMP"
+			property="startTime" />
+		<result column="activity_end_time" jdbcType="TIMESTAMP"
+			property="endTime" />
+		<result column="activity_address" jdbcType="VARCHAR" property="address" />
+		<result column="good_number" jdbcType="VARCHAR" property="goodNumber" />
+		<result column="collect_state" jdbcType="VARCHAR" property="collectState" />
+		<collection property="branNames" ofType="java.lang.String">
+			<result column="branch_name" jdbcType="VARCHAR" />
+		</collection>
+		<collection property="typeNames" ofType="java.lang.String">
+			<result column="activity_type_name" jdbcType="VARCHAR" />
+		</collection>
+		<collection property="comments"
+			ofType="com.baobao.common.model.andshow.ActComment">
+			<result property="commentId" column="comment_id" jdbcType="INTEGER"/>
+			<result property="userName" column="user_name" jdbcType="VARCHAR" />
+			<result property="userImg" column="user_img" jdbcType="VARCHAR" />
+			<result property="commentContent" column="comment_content"
+				jdbcType="VARCHAR" />
+			<result property="commentTime" column="comment_time" jdbcType="TIMESTAMP" />
+			<collection property="files"
+				ofType="com.baobao.common.model.andshow.AppTaskFile">
+				<result property="fileName" column="comment_file_name"
+					jdbcType="VARCHAR" />
+				<result property="fileUrl" column="comment_file_url"
+					jdbcType="VARCHAR" />
+			</collection>
+		</collection>
+	</resultMap>
+	
+	
+
+	<sql id="Act_Detail_List">
+		activity_id,activity_name,activity_content,activity_start_time,activity_end_time,activity_address,IFNULL(good_number,0) as good_number,collect_state
+		,branch_name,activity_type_name,user_name,user_img,comment_id,comment_content,comment_time,comment_file_name,comment_file_url
+	</sql>
+
+	<select id="getActDetail" resultMap="Act_Detail">
+		SELECT
+	<include refid="Act_Detail_List" ></include>
+FROM
+	activity
+LEFT JOIN activity_branch ON activity_branch_belong = activity_id
+LEFT JOIN branch ON activity_branch_id = branch_id
+LEFT JOIN act_type_relation ON act_id = activity_id
+LEFT JOIN activity_type ON type_id = activity_type_id
+LEFT JOIN (select COUNT(good.good_id) as good_number,good_object_id  from good LEFT JOIN activity on good_object_id = activity_id) as good_num_tab on good_object_id= activity_id
+LEFT JOIN (
+SELECT
+	member_name AS user_name,
+	member_photoURL AS user_img,
+	task_file_name AS comment_file_name,
+	task_file_url AS comment_file_url,
+	comment_content,
+	comment_id,
+	comment_time,
+	comment_object_id
+FROM
+	COMMENT
+LEFT JOIN task_file ON comment_id = task_file_belong
+LEFT JOIN member_tab ON member_id = comment_user_id) as comment_file_tab on comment_object_id = activity_id
+JOIN (SELECT
+	COUNT(*) as collect_state,collection_object_id
+	FROM
+		collection_tab
+WHERE
+		collection_object_id = #{actId}
+	AND collection_user_id = #{userId}) as col_tab
+	</select>
+
+
+<resultMap type="com.baobao.common.model.andshow.ActComment" id="ActComment">
+		<result property="commentId" column="comment_id" jdbcType="INTEGER"/>
+		<result property="goodNumber" column="good_number" jdbcType="INTEGER"/>
+		<result property="goodState" column="good_state" jdbcType="INTEGER"/>
+			<result property="userName" column="user_name" jdbcType="VARCHAR" />
+			<result property="userImg" column="user_img" jdbcType="VARCHAR" />
+			<result property="commentContent" column="comment_content"
+				jdbcType="VARCHAR" />
+			<result property="commentTime" column="comment_time" jdbcType="TIMESTAMP" />
+			<collection property="files"
+				ofType="com.baobao.common.model.andshow.AppTaskFile">
+				<result property="fileName" column="comment_file_name"
+					jdbcType="VARCHAR" />
+				<result property="fileUrl" column="comment_file_url"
+					jdbcType="VARCHAR" />
+			</collection>
+	
+	</resultMap>
+	<select id="getComment" resultMap="ActComment" >
+		SELECT
+	member_name AS user_name,
+	member_photoURL AS user_img,
+	task_file_name AS comment_file_name,
+	task_file_url AS comment_file_url,
+	comment_content,
+	comment_id,
+	comment_time,
+	comment_object_id,
+	IFNULL(good_number,0) as good_number,
+	good_state
+FROM
+	COMMENT
+LEFT JOIN task_file ON comment_id = task_file_belong
+LEFT JOIN member_tab ON member_id = comment_user_id
+LEFT JOIN (
+	SELECT
+		count(good_id) AS good_number,
+		good_object_id
+	FROM
+		good
+	GROUP BY
+		good_object_id
+) as com_number_tab on comment_id = good_object_id
+LEFT JOIN (
+	SELECT
+		CASE
+	WHEN good_object_id IS NOT NULL THEN
+		1
+	ELSE
+		0
+	END AS good_state,
+	comment_id as id
+FROM
+	comment
+LEFT JOIN (
+	SELECT
+		*
+	FROM
+		good
+	WHERE
+		good_user_id = #{userId}
+) AS good ON comment_id = good_object_id
+) as good_state_tab on comment_id = good_state_tab.id
+
+where comment_object_id = #{actId}
+	</select>
+
+
+
+
+
+
+
+<!-- 自动修改活动 -->
+<select id="selectFinish" resultType="java.lang.Integer">
+		select activity_id
+		from activity
+		 where activity_end_time &lt; now()
+</select>
+<update id="ActFinishByIds">
+	update activity set activity_state = 1 where activity_id in <foreach collection="list" open="(" close=")" item="id" separator=",">#{id}</foreach>
+</update>	
+
+<update id="ActFinish">
+	update activity set activity_state = 1 where activity_end_time &lt; now()
+</update>
+
+
+
+
+
+
+
+
+<!-- 活动统计 -->
+<resultMap type="com.baobao.common.model.andshow.ActCount" id="ActCount">
+	<result property="branchName" column="branch_name" jdbcType="INTEGER"/>
+	<result property="allNumber" column="all_number" jdbcType="INTEGER"/>
+	<collection property="actTypeCounts" ofType="com.baobao.common.model.andshow.ActTypeCount">
+		<result property="typeName" column="activity_type_name" jdbcType="VARCHAR"/>
+		<result property="number" column="type_number" jdbcType="INTEGER"/>
+	</collection>
+	
+</resultMap>
+
+<select id="getActCount" resultMap="ActCount">
+	SELECT 
+	COUNT(activity_id) as all_number,branch_name,
+	COUNT(type_id) as type_number,count_tab.activity_type_name
+from (
+SELECT branch_name,activity_id,type_id,activity_type_name
+ from activity 
+LEFT JOIN 
+act_type_relation on activity_id = act_type_relation.act_id
+LEFT JOIN activity_type on type_id = activity_type_id
+LEFT JOIN member_tab on activity_create_user_id = member_id 
+LEFT JOIN branch on member_INbranchID = branch.branch_id
+) as count_tab GROUP BY type_id
+
+</select>
+</mapper>

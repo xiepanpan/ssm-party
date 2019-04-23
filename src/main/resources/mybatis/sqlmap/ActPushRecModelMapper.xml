@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baobao.common.mapping.ActPushRecModelMapper" >
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.ActPushRecModel" >
+    <id column="act_push_rec_id" property="actPushRecId" jdbcType="INTEGER" />
+    <result column="act_push_actid" property="actPushActid" jdbcType="INTEGER" />
+    <result column="act_push_branchid" property="actPushBranchid" jdbcType="INTEGER" />
+    <result column="act_push_time" property="actPushTime" jdbcType="TIMESTAMP" />
+    <result column="act_push_status" property="actPushStatus" jdbcType="INTEGER" />
+    <result column="act_push_isdeleted" property="actPushIsdeleted" jdbcType="INTEGER" />
+    <result column="act_push_type" property="actPushType" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    act_push_rec_id, act_push_actid, act_push_branchid, act_push_time, act_push_status, 
+    act_push_isdeleted, act_push_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from act_push_rec_tab
+    where act_push_rec_id = #{actPushRecId,jdbcType=INTEGER}
+  </select>
+  <select id="getSelectedBranches" resultType="java.util.HashMap">
+  	select act_push_branchid as brId
+  	<if test="roleGrade==2" >
+  	,b.branch_name as brName
+  	</if>
+  	<if test="roleGrade==3">
+  	,b.party_branch_name as brName
+  	</if>
+  	 from act_push_rec_tab 
+  	<if test="roleGrade==2">
+  	a left join branch b on a.act_push_branchid = b.branch_id
+  	</if>
+  	<if test="roleGrade==3">
+  	a left join party_branch_tab b on a.act_push_branchid = b.party_id
+  	</if>
+  	where act_push_actid = #{actPushActid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from act_push_rec_tab
+    where act_push_rec_id = #{actPushRecId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByActId" parameterType="java.lang.Integer">
+  	delete from act_push_rec_tab where act_push_actid = #{actPushActid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.ActPushRecModel" >
+    insert into act_push_rec_tab (act_push_rec_id, act_push_actid, act_push_branchid, 
+      act_push_time, act_push_status, act_push_isdeleted, 
+      act_push_type)
+    values (#{actPushRecId,jdbcType=INTEGER}, #{actPushActid,jdbcType=INTEGER}, #{actPushBranchid,jdbcType=INTEGER}, 
+      #{actPushTime,jdbcType=TIMESTAMP}, #{actPushStatus,jdbcType=INTEGER}, #{actPushIsdeleted,jdbcType=INTEGER}, 
+      #{actPushType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.ActPushRecModel" >
+    insert into act_push_rec_tab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="actPushRecId != null" >
+        act_push_rec_id,
+      </if>
+      <if test="actPushActid != null" >
+        act_push_actid,
+      </if>
+      <if test="actPushBranchid != null" >
+        act_push_branchid,
+      </if>
+      <if test="actPushTime != null" >
+        act_push_time,
+      </if>
+      <if test="actPushStatus != null" >
+        act_push_status,
+      </if>
+      <if test="actPushIsdeleted != null" >
+        act_push_isdeleted,
+      </if>
+      <if test="actPushType != null" >
+        act_push_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="actPushRecId != null" >
+        #{actPushRecId,jdbcType=INTEGER},
+      </if>
+      <if test="actPushActid != null" >
+        #{actPushActid,jdbcType=INTEGER},
+      </if>
+      <if test="actPushBranchid != null" >
+        #{actPushBranchid,jdbcType=INTEGER},
+      </if>
+      <if test="actPushTime != null" >
+        #{actPushTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actPushStatus != null" >
+        #{actPushStatus,jdbcType=INTEGER},
+      </if>
+      <if test="actPushIsdeleted != null" >
+        #{actPushIsdeleted,jdbcType=INTEGER},
+      </if>
+      <if test="actPushType != null" >
+        #{actPushType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.ActPushRecModel" >
+    update act_push_rec_tab
+    <set >
+      <if test="actPushActid != null" >
+        act_push_actid = #{actPushActid,jdbcType=INTEGER},
+      </if>
+      <if test="actPushBranchid != null" >
+        act_push_branchid = #{actPushBranchid,jdbcType=INTEGER},
+      </if>
+      <if test="actPushTime != null" >
+        act_push_time = #{actPushTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actPushStatus != null" >
+        act_push_status = #{actPushStatus,jdbcType=INTEGER},
+      </if>
+      <if test="actPushIsdeleted != null" >
+        act_push_isdeleted = #{actPushIsdeleted,jdbcType=INTEGER},
+      </if>
+      <if test="actPushType != null" >
+        act_push_type = #{actPushType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where act_push_rec_id = #{actPushRecId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.ActPushRecModel" >
+    update act_push_rec_tab
+    set act_push_actid = #{actPushActid,jdbcType=INTEGER},
+      act_push_branchid = #{actPushBranchid,jdbcType=INTEGER},
+      act_push_time = #{actPushTime,jdbcType=TIMESTAMP},
+      act_push_status = #{actPushStatus,jdbcType=INTEGER},
+      act_push_isdeleted = #{actPushIsdeleted,jdbcType=INTEGER},
+      act_push_type = #{actPushType,jdbcType=INTEGER}
+    where act_push_rec_id = #{actPushRecId,jdbcType=INTEGER}
+  </update>
+  <update id="updatePushStatus" parameterType="com.baobao.common.model.ActPushRecModel">
+  update act_push_rec_tab set act_push_status = 1 where act_push_actid = #{actPushActid,jdbcType=INTEGER} and
+   act_push_branchid = #{actPushBranchid,jdbcType=INTEGER}
+  </update>
+  <insert id="batchInsertRecord" parameterType="java.util.List">
+		insert into act_push_rec_tab
+		(act_push_actid,act_push_branchid,act_push_time,act_push_type) values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.actPushActid,jdbcType=INTEGER},
+			#{item.actPushBranchid,jdbcType=INTEGER},
+			#{item.actPushTime,jdbcType=TIMESTAMP},
+		    #{item.actPushType,jdbcType=INTEGER}
+			)
+		</foreach>
+</insert>
+</mapper>

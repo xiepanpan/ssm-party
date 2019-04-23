@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baobao.common.mapping.CarouselModelMapper" >
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.CarouselModel" >
+    <id column="carousel_id" property="carouselId" jdbcType="INTEGER" />
+    <result column="carousel_imgUrl" property="carouselImgurl" jdbcType="VARCHAR" />
+    <result column="img_id" property="imgId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    carousel_id, carousel_imgUrl, img_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from carousel_tab
+    where carousel_id = #{carouselId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from carousel_tab
+    where carousel_id = #{carouselId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.CarouselModel" >
+    insert into carousel_tab (carousel_id, carousel_imgUrl, img_id
+      )
+    values (#{carouselId,jdbcType=INTEGER}, #{carouselImgurl,jdbcType=VARCHAR}, #{imgId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.CarouselModel" >
+    insert into carousel_tab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="carouselId != null" >
+        carousel_id,
+      </if>
+      <if test="carouselImgurl != null" >
+        carousel_imgUrl,
+      </if>
+      <if test="imgId != null" >
+        img_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="carouselId != null" >
+        #{carouselId,jdbcType=INTEGER},
+      </if>
+      <if test="carouselImgurl != null" >
+        #{carouselImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="imgId != null" >
+        #{imgId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.CarouselModel" >
+    update carousel_tab
+    <set >
+      <if test="carouselImgurl != null" >
+        carousel_imgUrl = #{carouselImgurl,jdbcType=VARCHAR},
+      </if>
+      <if test="imgId != null" >
+        img_id = #{imgId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where carousel_id = #{carouselId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.CarouselModel" >
+    update carousel_tab
+    set carousel_imgUrl = #{carouselImgurl,jdbcType=VARCHAR},
+      img_id = #{imgId,jdbcType=INTEGER}
+    where carousel_id = #{carouselId,jdbcType=INTEGER}
+  </update>
+</mapper>

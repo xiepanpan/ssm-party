@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baobao.common.mapping.HelpInfoModelMapper" >
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.HelpInfoModel" >
+    <id column="help_id" property="helpId" jdbcType="INTEGER" />
+    <result column="help_quesition" property="helpQuesition" jdbcType="VARCHAR" />
+    <result column="help_answer" property="helpAnswer" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    help_id, help_quesition, help_answer
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from help_tab
+    where help_id = #{helpId,jdbcType=INTEGER}
+  </select>
+  <select id="getHelpList" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from help_tab
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from help_tab
+    where help_id = #{helpId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.HelpInfoModel" >
+    insert into help_tab (help_id, help_quesition, help_answer
+      )
+    values (#{helpId,jdbcType=INTEGER}, #{helpQuesition,jdbcType=VARCHAR}, #{helpAnswer,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.HelpInfoModel" >
+    insert into help_tab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="helpId != null" >
+        help_id,
+      </if>
+      <if test="helpQuesition != null" >
+        help_quesition,
+      </if>
+      <if test="helpAnswer != null" >
+        help_answer,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="helpId != null" >
+        #{helpId,jdbcType=INTEGER},
+      </if>
+      <if test="helpQuesition != null" >
+        #{helpQuesition,jdbcType=VARCHAR},
+      </if>
+      <if test="helpAnswer != null" >
+        #{helpAnswer,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.HelpInfoModel" >
+    update help_tab
+    <set >
+      <if test="helpQuesition != null" >
+        help_quesition = #{helpQuesition,jdbcType=VARCHAR},
+      </if>
+      <if test="helpAnswer != null" >
+        help_answer = #{helpAnswer,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where help_id = #{helpId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.HelpInfoModel" >
+    update help_tab
+    set help_quesition = #{helpQuesition,jdbcType=VARCHAR},
+      help_answer = #{helpAnswer,jdbcType=VARCHAR}
+    where help_id = #{helpId,jdbcType=INTEGER}
+  </update>
+  <delete id="deleteBatch">
+  	delete from help_tab where help_id in(<foreach collection="list" item="id" separator=",">#{id}</foreach>)
+  </delete>
+</mapper>

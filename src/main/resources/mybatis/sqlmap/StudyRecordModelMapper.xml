@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baobao.common.mapping.StudyRecordModelMapper" >
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.StudyRecordModel" >
+    <id column="sturecord_id" property="sturecordId" jdbcType="INTEGER" />
+    <result column="stu_date" property="stuDate" jdbcType="TIMESTAMP" />
+    <result column="stu_times" property="stuTimes" jdbcType="INTEGER" />
+    <result column="today_time" property="todayTime" jdbcType="INTEGER" />
+    <result column="continiuity_studydays" property="continiuityStudydays" jdbcType="INTEGER" />
+    <result column="stu_member_id" property="stuMemberId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    sturecord_id, stu_date, stu_times, today_time, continiuity_studydays, stu_member_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from studyrecord_tab
+    where sturecord_id = #{sturecordId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from studyrecord_tab
+    where sturecord_id = #{sturecordId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.StudyRecordModel" >
+    insert into studyrecord_tab (sturecord_id, stu_date, stu_times, 
+      today_time, continiuity_studydays, stu_member_id
+      )
+    values (#{sturecordId,jdbcType=INTEGER}, #{stuDate,jdbcType=TIMESTAMP}, #{stuTimes,jdbcType=INTEGER}, 
+      #{todayTime,jdbcType=INTEGER}, #{continiuityStudydays,jdbcType=INTEGER}, #{stuMemberId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.StudyRecordModel" >
+    insert into studyrecord_tab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sturecordId != null" >
+        sturecord_id,
+      </if>
+      <if test="stuDate != null" >
+        stu_date,
+      </if>
+      <if test="stuTimes != null" >
+        stu_times,
+      </if>
+      <if test="todayTime != null" >
+        today_time,
+      </if>
+      <if test="continiuityStudydays != null" >
+        continiuity_studydays,
+      </if>
+      <if test="stuMemberId != null" >
+        stu_member_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sturecordId != null" >
+        #{sturecordId,jdbcType=INTEGER},
+      </if>
+      <if test="stuDate != null" >
+        #{stuDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stuTimes != null" >
+        #{stuTimes,jdbcType=INTEGER},
+      </if>
+      <if test="todayTime != null" >
+        #{todayTime,jdbcType=INTEGER},
+      </if>
+      <if test="continiuityStudydays != null" >
+        #{continiuityStudydays,jdbcType=INTEGER},
+      </if>
+      <if test="stuMemberId != null" >
+        #{stuMemberId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.StudyRecordModel" >
+    update studyrecord_tab
+    <set >
+      <if test="stuDate != null" >
+        stu_date = #{stuDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stuTimes != null" >
+        stu_times = #{stuTimes,jdbcType=INTEGER},
+      </if>
+      <if test="todayTime != null" >
+        today_time = #{todayTime,jdbcType=INTEGER},
+      </if>
+      <if test="continiuityStudydays != null" >
+        continiuity_studydays = #{continiuityStudydays,jdbcType=INTEGER},
+      </if>
+      <if test="stuMemberId != null" >
+        stu_member_id = #{stuMemberId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where sturecord_id = #{sturecordId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.StudyRecordModel" >
+    update studyrecord_tab
+    set stu_date = #{stuDate,jdbcType=TIMESTAMP},
+      stu_times = #{stuTimes,jdbcType=INTEGER},
+      today_time = #{todayTime,jdbcType=INTEGER},
+      continiuity_studydays = #{continiuityStudydays,jdbcType=INTEGER},
+      stu_member_id = #{stuMemberId,jdbcType=INTEGER}
+    where sturecord_id = #{sturecordId,jdbcType=INTEGER}
+  </update>
+  <resultMap type="java.lang.Integer" id="MaxDay">
+  	<!-- <result column="maxday" property="stuDay" jdbcType="INTEGER" /> -->
+  </resultMap>
+  <select id="getMaxDay" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select stu_date, sturecord_id, stu_times, today_time, continiuity_studydays, stu_member_id from studyrecord_tab where stu_member_id = #{stuMemberId,jdbcType=INTEGER}
+  	and stu_date = (select max(stu_date) from studyrecord_tab
+     where stu_member_id = #{stuMemberId,jdbcType=INTEGER})
+  </select>
+  <select id="allDays" resultMap="BaseResultMap">
+  	select stu_date  from studyrecord_tab where stu_member_id = #{stuMemberId,jdbcType=INTEGER} order by stu_date desc
+  </select>
+   <update id="updateByUserId" parameterType="com.baobao.common.model.StudyRecordModel" >
+    update studyrecord_tab
+    <set >
+      <if test="stuDate != null" >
+        stu_date = #{stuDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stuTimes != null" >
+        stu_times = #{stuTimes,jdbcType=INTEGER},
+      </if>
+      <if test="todayTime != null" >
+        today_time = #{todayTime,jdbcType=INTEGER},
+      </if>
+      <if test="continiuityStudydays != null" >
+        continiuity_studydays = #{continiuityStudydays,jdbcType=INTEGER},
+      </if>
+    </set>
+    where  sturecord_id = #{sturecordId,jdbcType=INTEGER}
+    and stu_member_id = #{stuMemberId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    stu_date, sturecord_id, stu_date, stu_times, today_time, continiuity_studydays, stu_member_id
+    from studyrecord_tab
+    where stu_member_id = #{stuMemberId,jdbcType=INTEGER} and stu_date = (select max(stu_date) from studyrecord_tab
+     where stu_member_id = #{stuMemberId,jdbcType=INTEGER})
+  </select>
+  <select id="selectTodayTime" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+   select 
+     stu_date as stu_date, sturecord_id, stu_times, today_time, continiuity_studydays, stu_member_id
+    from studyrecord_tab
+    where stu_member_id = #{stuMemberId,jdbcType=INTEGER} and stu_date = (select max(stu_date) from studyrecord_tab
+     where stu_member_id = #{stuMemberId,jdbcType=INTEGER})
+  </select>
+  <select id="selectStuReList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  	select <include refid="Base_Column_List"></include> from studyrecord_tab
+    where stu_member_id = #{stuMemberId,jdbcType=INTEGER} order by stu_date desc
+  </select>
+  <select id="countYearRe" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+  	select ifnull(sum(today_time),0) from studyrecord_tab where year(stu_date) = year(now()) and stu_member_id = #{stuMemberId,jdbcType=INTEGER}
+  </select>
+  <select id="countMonthRe" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+   select ifnull(sum(today_time),0) from studyrecord_tab where month(stu_date) = month(now()) and stu_member_id = #{stuMemberId,jdbcType=INTEGER}
+  </select>
+   <resultMap id="NewReResultMap" type="com.baobao.common.model.StudyRecordNewModel" >
+    <result column="stu_date" property="date" jdbcType="TIMESTAMP" />
+    <result column="today_time" property="time" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="getStuNewList" resultMap="NewReResultMap" parameterType="java.lang.Integer">
+   select stu_date,today_time as today_time from studyrecord_tab where month(stu_date) = month(now()) 
+   and stu_member_id = #{stuMemberId,jdbcType=INTEGER} order by stu_date desc
+  </select>
+</mapper>

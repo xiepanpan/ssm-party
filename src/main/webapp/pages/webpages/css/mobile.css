@@ -1,0 +1,102 @@
+@charset "utf-8";
+/* CSS Document */
+html{overflow-y:auto;overflow-x:hidden;-webkit-text-size-adjust:none;}
+*{margin:0;padding:0;list-style:none;}
+body{padding:0;margin:0;font: 10px "Microsoft YaHei",微软雅黑,'宋体',tahoma,Verdana,arial,sans-serif;color:#333;}
+input,textarea,select,button{vertical-align:middle;outline:none;font-family:"Microsoft YaHei",微软雅黑;}
+textarea{resize:none;}
+a{color:#333;text-decoration:none;outline:none;}
+a:hover{color:#e22929;text-decoration:none;}
+
+.clear{clear:both;}
+
+/* logo css */
+.mlogodiv{
+padding:12px 0;
+text-align:center;
+border-bottom:1px solid #e22929;
+}
+
+
+/* 新闻详情页面css */
+.wztit {
+font-size: 16px;
+line-height: 40px;
+text-align: left;
+padding: 15px 0 0 0;
+}
+.wzfbxx{
+line-height: 30px;
+color:#a9a9a9;
+text-align: left;
+}
+.secnr {
+height: auto;
+text-align: left;
+line-height: 1.8em;
+width: 92%;
+margin: 0 auto;
+font-size: 1.6em;
+}
+
+.img{
+width: 100%; height: auto;max-width: 100%; display: block; 
+}
+.wzcon{
+	text-align: justify;
+    text-justify: inter-ideograph;/*IE*/}
+
+/* 帮助列表页面css */
+.tbox{
+width:92%;
+margin:1em auto;
+background:#efefef;
+}
+
+.htitle{
+width:100%;
+color:#666;
+padding-left:5px;
+border-left:5px solid #e22929; 
+letter-spacing:0.1em;
+font-weight:bold;
+line-height:1.6em;
+font-size: 2.2em;
+text-align: left;
+}
+
+.helpcontener{
+height: auto;
+text-align: left;
+line-height: 1.8em;
+width: 92%;
+margin: 0 auto;
+}
+
+.hlist{
+height:3em;
+width:100%;
+font-size: 1.6em;
+line-height:3em;
+text-align: left;
+overflow:hidden;
+}
+
+.bottom_line{
+border-bottom:1px solid #ddd;
+}
+
+/* 帮助详情 */
+
+.secnr_h {
+height: auto;
+text-align: left;
+width: 92%;
+margin: 0 auto;
+font-family:"Arial",微软雅黑;
+}
+.wenzhang{height:40px;border-bottom:#ededed 1px solid;}
+.t1{height:30px;width:66px;font-weight:bold;color:#747474;font-size:2em;line-height:2em;text-align:left;padding:16px 0 10px 0;}
+.t11{height:30px;width:66px;font-weight:bold;color:#747474;font-size:2em;line-height:1.3em;text-align:left;padding:16px 0 10px 0;}
+.t2{height:30px;color:#868686;font-size:2em;line-height:1.3em;text-align:left;padding:16px 0 10px 0;}
+.line_h{height:1px;background-color:#ececec;}

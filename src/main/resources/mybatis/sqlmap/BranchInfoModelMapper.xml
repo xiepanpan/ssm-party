@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baobao.common.mapping.BranchInfoModelMapper" >
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.BranchInfoModel" >
+    <id column="branch_id" property="branchId" jdbcType="INTEGER" />
+    <result column="branch_father_id" property="branchFatherId" jdbcType="INTEGER" />
+    <result column="branch_name" property="branchName" jdbcType="VARCHAR" />
+    <result column="branch_secretary" property="branchSecretary" jdbcType="VARCHAR" />
+    <result column="branch_organization_committee" property="branchOrganizationCommittee" jdbcType="VARCHAR" />
+    <result column="branch_publicity_committee" property="branchPublicityCommittee" jdbcType="VARCHAR" />
+    <result column="branch_remark" property="branchRemark" jdbcType="VARCHAR" />
+    <result column="branch_secretary_id" property="brSeId" jdbcType="INTEGER" />
+    <result column="branch_org_id" property="brOrgId" jdbcType="INTEGER" />
+    <result column="branch_xc_id" property="brXcId" jdbcType="INTEGER" />
+    <result column="br_isdeleted" property="brIsdeleted" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    branch_id, branch_father_id, branch_name, branch_secretary, branch_organization_committee, 
+    branch_publicity_committee, branch_remark,branch_secretary_id,branch_org_id,branch_xc_id,br_isdeleted
+  </sql>
+  <sql id="Condition">
+  	1=1
+  	<if test="searchValue!=null and searchValue!=''">
+  		and (
+  			branch_name like concat('%',concat(#{searchValue},'%'))
+	    	or branch_secretary LIKE concat('%',concat(#{searchValue},'%'))
+	    	or branch_organization_committee   LIKE  concat('%',concat(#{searchValue},'%'))
+	    	or branch_publicity_committee   LIKE  concat('%',concat(#{searchValue},'%'))
+	    )
+  	</if>
+  	<if test="branchFatherId !=null">
+  		and branch_father_id=#{branchFatherId}
+  	</if>
+  </sql>
+  <select id="getBranchList" resultMap = "BaseResultMap" parameterType="com.baobao.common.cmd.BranchCondition">
+  	select <include refid="Base_Column_List"></include>
+  	from branch where 
+  	1=1
+  	<if test="searchValue !=null and searchValue != ''">
+    	and branch_name like concat('%',concat(#{searchValue},'%'))
+    	or branch_secretary like concat('%',concat(#{searchValue},'%'))
+    	or branch_organization_committee like  concat('%',concat(#{searchValue},'%'))
+    	or  branch_publicity_committee like concat('%',concat(#{searchValue},'%'))
+    </if>
+  	and br_isdeleted = 0
+  </select>
+  <select id="getBranchInfoModels" resultMap = "BaseResultMap" parameterType="java.lang.Integer">
+  	select <include refid="Base_Column_List"></include>
+  	from branch where 
+  	1=1
+  	and branch_father_id=#{branchFatherId}
+  	and br_isdeleted = 0
+  </select>
+  <select id="getBranchId" resultType = "java.lang.Integer" parameterType="java.lang.Integer">
+  	select branch_id
+  	from branch where 
+  	1=1
+  	and branch_father_id=#{branchFatherId}
+  	and br_isdeleted = 0
+  </select>
+  <select id="getBranchInfoModelsByCondition" resultMap = "BaseResultMap" parameterType="com.baobao.common.cmd.PartyCmd">
+  	select <include refid="Base_Column_List"></include>
+  	from branch where 
+  	<include refid="Condition"></include>
+  	and br_isdeleted = 0
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from branch
+    where branch_id = #{branchId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from branch
+    where branch_id = #{branchId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.BranchInfoModel" >
+    insert into branch (branch_id, branch_father_id, branch_name, 
+      branch_secretary, branch_organization_committee, 
+      branch_publicity_committee, branch_remark)
+    values (#{branchId,jdbcType=INTEGER}, #{branchFatherId,jdbcType=INTEGER}, #{branchName,jdbcType=VARCHAR}, 
+      #{branchSecretary,jdbcType=VARCHAR}, #{branchOrganizationCommittee,jdbcType=VARCHAR}, 
+      #{branchPublicityCommittee,jdbcType=VARCHAR}, #{branchRemark,jdbcType=VARCHAR},#{brIsdeleted,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.BranchInfoModel" >
+    insert into branch
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="branchId != null" >
+        branch_id,
+      </if>
+      <if test="branchFatherId != null" >
+        branch_father_id,
+      </if>
+      <if test="branchName != null" >
+        branch_name,
+      </if>
+      <if test="branchSecretary != null" >
+        branch_secretary,
+      </if>
+      <if test="branchOrganizationCommittee != null" >
+        branch_organization_committee,
+      </if>
+      <if test="branchPublicityCommittee != null" >
+        branch_publicity_committee,
+      </if>
+      <if test="branchRemark != null" >
+        branch_remark,
+      </if>
+      <if test="brSeId!=null">
+     	branch_secretary_id,
+      </if>
+      <if test="brOrgId!=null">
+     	branch_org_id,
+      </if>
+      <if test="brXcId!=null">
+      	branch_xc_id,
+      </if>
+      <if test="brIsdeleted != null" >
+        br_isdeleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="branchId != null" >
+        #{branchId,jdbcType=INTEGER},
+      </if>
+      <if test="branchFatherId != null" >
+        #{branchFatherId,jdbcType=INTEGER},
+      </if>
+      <if test="branchName != null" >
+        #{branchName,jdbcType=VARCHAR},
+      </if>
+      <if test="branchSecretary != null" >
+        #{branchSecretary,jdbcType=VARCHAR},
+      </if>
+      <if test="branchOrganizationCommittee != null" >
+        #{branchOrganizationCommittee,jdbcType=VARCHAR},
+      </if>
+      <if test="branchPublicityCommittee != null" >
+        #{branchPublicityCommittee,jdbcType=VARCHAR},
+      </if>
+      <if test="branchRemark != null" >
+        #{branchRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="brSeId!=null">
+     	 #{brSeId,jdbcType=INTEGER},
+      </if>
+      <if test="brOrgId!=null">
+     	 #{brOrgId,jdbcType=INTEGER},
+      </if>
+      <if test="brXcId!=null">
+      	 #{brXcId,jdbcType=INTEGER},
+      </if>
+       <if test="brIsdeleted != null" >
+        #{brIsdeleted,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.BranchInfoModel" >
+    update branch
+    <set >
+      <if test="branchFatherId != null" >
+        branch_father_id = #{branchFatherId,jdbcType=INTEGER},
+      </if>
+      <if test="branchName != null" >
+        branch_name = #{branchName,jdbcType=VARCHAR},
+      </if>
+      <if test="branchSecretary != null" >
+        branch_secretary = #{branchSecretary,jdbcType=VARCHAR},
+      </if>
+      <if test="branchOrganizationCommittee != null" >
+        branch_organization_committee = #{branchOrganizationCommittee,jdbcType=VARCHAR},
+      </if>
+      <if test="branchPublicityCommittee != null" >
+        branch_publicity_committee = #{branchPublicityCommittee,jdbcType=VARCHAR},
+      </if>
+      <if test="branchRemark != null" >
+        branch_remark = #{branchRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="brSeId!=null">
+     	branch_secretary_id = #{brSeId,jdbcType=INTEGER},
+      </if>
+      <if test="brOrgId!=null">
+     	branch_org_id = #{brOrgId,jdbcType=INTEGER},
+      </if>
+      <if test="brXcId!=null">
+      	branch_xc_id = #{brXcId,jdbcType=INTEGER},
+      </if>
+       <if test="brIsdeleted != null" >
+        br_isdeleted = #{brIsdeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    where branch_id = #{branchId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.BranchInfoModel" >
+    update branch
+    set branch_father_id = #{branchFatherId,jdbcType=INTEGER},
+      branch_name = #{branchName,jdbcType=VARCHAR},
+      branch_secretary = #{branchSecretary,jdbcType=VARCHAR},
+      branch_organization_committee = #{branchOrganizationCommittee,jdbcType=VARCHAR},
+      branch_publicity_committee = #{branchPublicityCommittee,jdbcType=VARCHAR},
+      branch_remark = #{branchRemark,jdbcType=VARCHAR},
+      branch_secretary_id = #{brSeId,jdbcType=INTEGER},
+      branch_org_id = #{brOrgId,jdbcType=INTEGER},
+      branch_xc_id = #{brXcId,jdbcType=INTEGER},
+      br_isdeleted= #{brIsdeleted,jdbcType=INTEGER}
+    where branch_id = #{branchId,jdbcType=INTEGER}
+  </update>
+  <select id="getBypage" resultMap="BaseResultMap" parameterType="com.baobao.common.cmd.BranchCondition">
+  	select  
+  	<include refid="Base_Column_List" />
+  	from branch
+  	<where>
+  	1=1
+  	<if test="searchValue !=null and searchValue != ''">
+    	and branch_name like concat('%',concat(#{searchValue},'%'))
+    	or branch_secretary like concat('%',concat(#{searchValue},'%'))
+    	or branch_organization_committee like  concat('%',concat(#{searchValue},'%'))
+    	or  branch_publicity_committee like concat('%',concat(#{searchValue},'%'))
+    </if>
+  	</where>
+  </select>
+  
+  <update id="deleteBYSoft" parameterType="java.lang.Integer">
+  update branch set br_isdeleted = 1 where branch_id = #{branchId,jdbcType=INTEGER}
+  </update>
+  <insert id ="insertBranchInfoBatch" parameterType="java.util.List" >
+       insert into branch  (branch_name, 
+      branch_secretary, branch_organization_committee, 
+      branch_publicity_committee) values
+             <foreach collection ="list" item="branchInfo" index= "index" separator =",">
+            (
+			 #{branchInfo.branchName,jdbcType=VARCHAR}, 
+     		 #{branchInfo.branchSecretary,jdbcType=VARCHAR},
+     		 #{branchInfo.branchOrganizationCommittee,jdbcType=VARCHAR}, 
+      		 #{branchInfo.branchPublicityCommittee,jdbcType=VARCHAR}
+				)
+             </foreach >
+      </insert >
+     <select id="getListByName" parameterType="java.lang.String" resultType="int">
+     	select count(*) from branch where 1=1 and
+     	<if test="branchName != null" >
+        branch_name = #{branchName,jdbcType=VARCHAR} and
+        </if>
+        br_isdeleted = 0
+     </select>
+      <select id="getListById" parameterType="java.lang.Integer" resultType="int">
+     	select count(*) from branch where 1=1 and
+     	<if test="branchId != null">
+        branch_id = #{branchId,jdbcType=VARCHAR} and
+        </if>
+         br_isdeleted = 0
+     </select>
+     <select id="getBranchChildId" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+     	select  branch_id as brId,branch_name as brName from branch where branch_father_id = #{branchFatherId,jdbcType=INTEGER} and  br_isdeleted = 0
+     </select>
+     <select id="getBranchesInfo" resultType="java.util.HashMap">
+     	select b.branch_name as brName,count(member_id) as memcount from branch b left join member_tab a on 
+		a.member_INbranchID = b.branch_id where b.br_isdeleted = 0 and a.member_isdeleted = 1 and a.member_INbranchID !=-1 group by branch_id  limit #{start},#{end}
+     </select>
+     <select id="getBranchIdsByName" resultType="java.lang.Integer">
+     	select branch_id from branch where  branch_name = #{branchName,jdbcType=VARCHAR} and br_isdeleted = 0;
+     </select>
+     <update id="deleteBatch">
+     	update branch set br_isdeleted = 1 where branch_id in (<foreach collection="list" item="id" separator=",">#{id}</foreach>)
+     </update>
+     <select id="getBrIdByTel" resultType="java.lang.Integer">
+     	select branch_id from branch a left join member_tab b on a.branch_id = b.member_INbranchID where b.member_tel =#{memberTel}
+     </select>
+     
+     
+     
+     <resultMap type="com.baobao.common.model.andshow.TaskBranch" id="TaskBranch">
+     	<result property="id" column="branch_id" jdbcType="INTEGER"/>
+     	<result property="name" column="branch_name" jdbcType="INTEGER"/>
+     </resultMap>
+     
+     <select id="getTaskBranch" resultMap="TaskBranch">
+     	select branch_id,branch_name from branch where br_isdeleted = 0
+     	
+     </select>
+     
+</mapper>

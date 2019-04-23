@@ -1,0 +1,244 @@
+@charset "utf-8";
+
+html,body {
+	height: 100%;
+	overflow: hidden;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	word-break: break-all;
+	font-size: 12px;
+	font-family: "微软雅黑", Arial, Helvetica, sans-serif;
+	color: #2b2b2b;
+	margin: 0;
+	padding: 0;
+	
+}
+
+h1,h2,h3,h4,h5,h6 {
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	font-weight: normal;
+}
+
+img,a img {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	vertical-align: middle;
+	outline: none;
+}
+
+ul,li {
+	list-style: none;
+}
+
+input,select {
+	vertical-align: middle;
+}
+
+body ::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #999;
+}
+body :-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #999;
+}
+body ::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #999;
+}
+body :-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: #999;
+}
+
+
+@media screen and (min-width: 1681px) { 
+
+.titleText{
+	height: 130px;
+	font-family: "微软雅黑";
+	font-size: 30px;
+	color: #555;
+	font-weight: bold;
+	line-height: 130px;
+	padding-left: 83px;
+	padding-top:20
+}
+.main{
+	width: 100%;
+	margin: 0 auto;
+	height:603px;
+	background: url(../img/login_img/bg.jpg) center no-repeat;
+}
+} 
+/* css注释：设置了浏览器宽度不小于1681px时 */ 
+
+
+@media screen and (min-width: 1441px) and (max-width: 1680px) { 
+
+.titleText{
+	height: 130px;
+	font-family: "微软雅黑";
+	font-size: 30px;
+	color: #555;
+	font-weight: bold;
+	line-height: 130px;
+	padding-left: 83px;
+}
+.main{
+	width: 100%;
+	margin: 0 auto;
+	height:528px;
+	background: url(../img/login_img/bg_m.jpg) center no-repeat;
+}
+} 
+/* 设置了浏览器宽度在1441-1680px时*/ 
+
+
+@media screen and (max-width: 1440px) { 
+
+.titleText{
+	height: 130px;
+	font-family: "微软雅黑";
+	font-size: 30px;
+	color: #555;
+	font-weight: bold;
+	line-height: 130px;
+	padding-left: 83px;
+}
+.main{
+	width: 100%;
+	margin: 0 auto;
+	height:452px;
+	background: url(../img/login_img/bg_sm.jpg) center no-repeat;
+}
+} 
+/* css注释：设置了浏览器宽度不大于1440px时 */ 
+
+
+.line{
+	width: 100%;
+	text-align: center;
+	margin: 0 auto;
+	height:60px;
+	margin-top: 19px;
+	background: url(../img/login_img/line.jpg) center no-repeat;
+}
+.lgbg{
+	width: 408px;
+	margin: 0 auto;
+	height:351px;
+	padding-top: 124px;
+	background: url(../img/login_img/lgbg.png) center no-repeat;
+}
+.lgbox{
+	width: 270px;
+	height: 219px;
+	margin:0 auto;
+}
+.username{
+	width: 270px;
+	height: 40px;
+	padding-left: 46px;
+	border: 1px solid #666;
+	border-radius: 2px;
+	background: url(../img/login_img/user.jpg) left center no-repeat;
+	background-color: #fff;
+}
+.password{
+	width: 270px;
+	height: 40px;
+	padding-left: 46px;
+	border: 1px solid #666;
+	border-radius: 2px;
+	background: url(../img/login_img/lock.jpg) left center no-repeat;
+	background-color: #fff;
+}
+.eyzm{
+	float: left;
+	width: 160px;
+	margin-right: 14px;
+}
+.yzm{
+	float: left;
+	width: 96px;
+	padding-top: 2px;
+}
+.yzinput{
+	width: 160px;
+	height: 36px;
+	border: 1px solid #666;
+	border-radius: 2px;
+	background-color: #fff;
+	text-align: center;
+}
+.frash{
+	color: #333;
+}
+.frash:hover{
+	color: #333;
+}
+.frash:visited{
+	color: #333;
+}
+.butbox{
+	clear: both;
+	text-align: center;
+}
+.but{
+	width: 108px;
+	height: 32px;
+	cursor:pointer;
+	letter-spacing: 5px;
+	background: #898989;
+	border-radius:7px;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 600;
+	border: 0px;
+	text-align: center;
+}
+
+
+
+
+.but:disabled{
+	background-color:#aaaaaa;
+}
+.hidden{
+	display:none;
+}
+.infor_on{
+	display:block;
+}
+.infor_containor{
+	width:270px;
+	height:32px;
+	padding-top:5px;
+}
+#infor{
+	background-color:#f9f9f9;
+    color: red;
+    border: 1px solid #ddd;
+    padding:5px;	
+}
+.m32{
+	margin-top:2px;
+}
+
+
+
+
+
+
+
+.m12{margin-top: 12px;}

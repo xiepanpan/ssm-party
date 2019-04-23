@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baobao.common.mapping.ActRecordModelMapper">
+	<resultMap id="BaseResultMap" type="com.baobao.common.model.ActRecordModel">
+		<id column="act_record_id" property="actRecordId" jdbcType="INTEGER" />
+		<result column="act_member_id" property="actMemberId" jdbcType="INTEGER" />
+		<result column="act_rec_actid" property="actRecActid" jdbcType="INTEGER" />
+		<result column="act__report" property="actReport" jdbcType="VARCHAR" />
+		<result column="act_re_status" property="actReStatus" jdbcType="INTEGER" />
+		<result column="act_com_id" property="actComId" jdbcType="INTEGER" />
+		<result column="act_comment" property="actComment" jdbcType="VARCHAR" />
+		<result column="act_com_status" property="actComStatus"
+			jdbcType="INTEGER" />
+		<result column="act_repottime" property="actRepottime"
+			jdbcType="TIMESTAMP" />
+		<result column="act_comtime" property="actComtime" jdbcType="TIMESTAMP" />
+		<result column="act_status" property="actStatus" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap type="com.baobao.common.model.ActivityMobile" id="ResultMap">
+		<result column="act_rec_actid" property="id" jdbcType="INTEGER" />
+		<result column="activity_title" property="title" jdbcType="VARCHAR" />
+		<result column="activity_context" property="describe" jdbcType="VARCHAR" />
+		<result column="activity_place" property="address" jdbcType="VARCHAR" />
+		<result column="activity_leaderName" property="initiator"
+			jdbcType="VARCHAR" />
+		<result column="act_status" property="state" jdbcType="INTEGER" />
+		<result column="activity_starttime" property="startTime"
+			jdbcType="TIMESTAMP" />
+		<result column="activity_endtime" property="endTime" jdbcType="TIMESTAMP" />
+		 <result column="activity_latitude" property="latitude" jdbcType="DOUBLE" />
+    	<result column="activity_longitude" property="longitude" jdbcType="DOUBLE" />
+	</resultMap>
+	<resultMap type="com.baobao.common.model.CommentModel" id="CommentMap">
+		<result column="member_name" property="reviewer" jdbcType="VARCHAR" />
+		<result column="act_comment" property="comment" jdbcType="VARCHAR" />
+		<result column="act_comtime" property="time" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<resultMap type="com.baobao.common.model.UserResultModel" id="UserMap">
+		<id column="member_id" property="id" jdbcType="INTEGER" />
+		<result column="member_name" property="name" jdbcType="VARCHAR" />
+		<result column="member_sex" property="gender" jdbcType="VARCHAR" />
+		<result column="member_type" property="dangyuanType" jdbcType="VARCHAR" />
+		<result column="branch_name" property="partyOrganizationName"
+			jdbcType="VARCHAR" />
+		<result column="member_job" property="jobType" jdbcType="VARCHAR" />
+		<result column="member_photoURL" property="iconUrl" jdbcType="VARCHAR" />
+		<result column="act_status" property="activityStatus"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="newColumn_List">
+		act_rec_actid,activity_title,activity_context,activity_place,activity_leaderName,activity_starttime,activity_endtime
+		,act_re_status,act_status,activity_latitude,activity_longitude
+	</sql>
+	<sql id="Base_Column_List">
+		act_record_id, act_member_id, act_rec_actid, act__report, act_re_status, act_com_id,
+		act_comment, act_com_status, act_repottime, act_comtime, act_status
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from act_record_tab
+		where act_record_id = #{actRecordId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from act_record_tab
+		where act_record_id = #{actRecordId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteRecordByActId" parameterType="java.lang.Integer">
+	delete from act_record_tab where act_rec_actid = #{actRecActid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.baobao.common.model.ActRecordModel">
+		insert into act_record_tab (act_record_id, act_member_id,
+		act_rec_actid,
+		act__report, act_re_status, act_com_id,
+		act_comment, act_com_status, act_repottime,
+		act_comtime, act_status)
+		values (#{actRecordId,jdbcType=INTEGER}, #{actMemberId,jdbcType=INTEGER},
+		#{actRecActid,jdbcType=INTEGER},
+		#{actReport,jdbcType=VARCHAR}, #{actReStatus,jdbcType=INTEGER}, #{actComId,jdbcType=INTEGER},
+		#{actComment,jdbcType=VARCHAR}, #{actComStatus,jdbcType=INTEGER},
+		#{actRepottime,jdbcType=TIMESTAMP},
+		#{actComtime,jdbcType=TIMESTAMP}, #{actStatus,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.baobao.common.model.ActRecordModel">
+		insert into act_record_tab
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="actRecordId != null">
+				act_record_id,
+			</if>
+			<if test="actMemberId != null">
+				act_member_id,
+			</if>
+			<if test="actRecActid != null">
+				act_rec_actid,
+			</if>
+			<if test="actReport != null">
+				act__report,
+			</if>
+			<if test="actReStatus != null">
+				act_re_status,
+			</if>
+			<if test="actComId != null">
+				act_com_id,
+			</if>
+			<if test="actComment != null">
+				act_comment,
+			</if>
+			<if test="actComStatus != null">
+				act_com_status,
+			</if>
+			<if test="actRepottime != null">
+				act_repottime,
+			</if>
+			<if test="actComtime != null">
+				act_comtime,
+			</if>
+			<if test="actStatus != null">
+				act_status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="actRecordId != null">
+				#{actRecordId,jdbcType=INTEGER},
+			</if>
+			<if test="actMemberId != null">
+				#{actMemberId,jdbcType=INTEGER},
+			</if>
+			<if test="actRecActid != null">
+				#{actRecActid,jdbcType=INTEGER},
+			</if>
+			<if test="actReport != null">
+				#{actReport,jdbcType=VARCHAR},
+			</if>
+			<if test="actReStatus != null">
+				#{actReStatus,jdbcType=INTEGER},
+			</if>
+			<if test="actComId != null">
+				#{actComId,jdbcType=INTEGER},
+			</if>
+			<if test="actComment != null">
+				#{actComment,jdbcType=VARCHAR},
+			</if>
+			<if test="actComStatus != null">
+				#{actComStatus,jdbcType=INTEGER},
+			</if>
+			<if test="actRepottime != null">
+				#{actRepottime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="actComtime != null">
+				#{actComtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="actStatus != null">
+				#{actStatus,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.ActRecordModel">
+		update act_record_tab
+		<set>
+			<if test="actMemberId != null">
+				act_member_id = #{actMemberId,jdbcType=INTEGER},
+			</if>
+			<if test="actRecActid != null">
+				act_rec_actid = #{actRecActid,jdbcType=INTEGER},
+			</if>
+			<if test="actReport != null">
+				act__report = #{actReport,jdbcType=VARCHAR},
+			</if>
+			<if test="actReStatus != null">
+				act_re_status = #{actReStatus,jdbcType=INTEGER},
+			</if>
+			<if test="actComId != null">
+				act_com_id = #{actComId,jdbcType=INTEGER},
+			</if>
+			<if test="actComment != null">
+				act_comment = #{actComment,jdbcType=VARCHAR},
+			</if>
+			<if test="actComStatus != null">
+				act_com_status = #{actComStatus,jdbcType=INTEGER},
+			</if>
+			<if test="actRepottime != null">
+				act_repottime = #{actRepottime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="actComtime != null">
+				act_comtime = #{actComtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="actStatus != null">
+				act_status = #{actStatus,jdbcType=INTEGER},
+			</if>
+		</set>
+		where act_record_id = #{actRecordId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.baobao.common.model.ActRecordModel">
+		update act_record_tab
+		set act_member_id = #{actMemberId,jdbcType=INTEGER},
+		act_rec_actid = #{actRecActid,jdbcType=INTEGER},
+		act__report = #{actReport,jdbcType=VARCHAR},
+		act_re_status = #{actReStatus,jdbcType=INTEGER},
+		act_com_id = #{actComId,jdbcType=INTEGER},
+		act_comment = #{actComment,jdbcType=VARCHAR},
+		act_com_status = #{actComStatus,jdbcType=INTEGER},
+		act_repottime = #{actRepottime,jdbcType=TIMESTAMP},
+		act_comtime = #{actComtime,jdbcType=TIMESTAMP},
+		act_status = #{actStatus,jdbcType=INTEGER}
+		where act_record_id = #{actRecordId,jdbcType=INTEGER}
+	</update>
+	<insert id="batchInsertRecord" parameterType="java.util.List">
+		insert into act_record_tab
+		(act_member_id,act_rec_actid) values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.actMemberId,jdbcType=INTEGER},
+			#{item.actRecActid,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	<select id="getActivtyModelByState" parameterType="com.baobao.common.cmd.ActivityCondition"
+		resultMap="ResultMap">
+		select
+		<include refid="newColumn_List"></include>
+		from act_record_tab a left join activity_tab b on a.act_rec_actid =
+		b.activity_id
+		<where>
+			<if test="state ==0">
+				and act_status = 0
+			</if>
+			<if test="state ==1">
+				and act_status = 1
+			</if>
+			<if test="state ==2">
+				and act_status in(2,3)
+			</if>
+			<if test="actMemberId!=null">
+				and act_member_id = #{actMemberId,jdbcType=INTEGER}
+			</if>
+		</where>
+		order by activity_createtime desc limit
+		#{startIndex,jdbcType=INTEGER},#{endIndex,jdbcType=INTEGER}
+	</select>
+	<update id="updateStateById" parameterType="com.baobao.common.cmd.ActivityCondition">
+		update act_record_tab
+		<set>
+			<if test="state != null">
+				act_status = #{state,jdbcType=INTEGER},
+			</if>
+		</set>
+		<where>
+			<if test="actMemberId != null and id != null">
+				and act_member_id = #{actMemberId,jdbcType=INTEGER}
+				and act_rec_actid = #{id,jdbcType=INTEGER}
+			</if>
+		</where>
+	</update>
+	<update id="insertReport" parameterType="com.baobao.common.cmd.ActivityCondition">
+		update act_record_tab
+		<set>
+			<if test="reports != null">
+				act__report = #{reports,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				act_re_status = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="actRepottime != null">
+				act_repottime = #{actRepottime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="comment != null">
+				act_comment = #{comment,jdbcType=VARCHAR},
+			</if>
+			<if test="actComtime != null">
+				act_comtime = #{actComtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="actComId != null">
+				act_com_id = #{actComId,jdbcType=INTEGER},
+			</if>
+		</set>
+		<where>
+			<if test="actMemberId != null and id != null">
+				and act_member_id = #{actMemberId,jdbcType=INTEGER}
+				and act_rec_actid = #{id,jdbcType=INTEGER}
+			</if>
+		</where>
+	</update>
+	<select id="getReports" parameterType="com.baobao.common.cmd.ActivityCondition"
+		resultType="java.lang.String">
+		select act__report from act_record_tab
+		<where>
+			<if test="actMemberId != null and id != null">
+				and act_member_id = #{actMemberId,jdbcType=INTEGER}
+				and act_rec_actid = #{id,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+	<select id="getComments" parameterType="com.baobao.common.cmd.ActivityCondition"
+		resultMap="CommentMap">
+		select act_comment,member_name,act_comtime
+		from act_record_tab a left join member_tab b on a.act_com_id = b.member_id
+		<where>
+			<if test="actMemberId!=null and id != null">
+				and act_member_id = #{actMemberId,jdbcType=INTEGER}
+				and act_rec_actid = #{id,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+	<select id="getPartMembers" parameterType="java.lang.Integer"
+		resultMap="UserMap">
+		select
+		member_id,member_name,member_sex,member_type,branch_name,member_job,member_photoURL,act_status
+		from
+		act_record_tab a left join member_tab b on a.act_member_id = b.member_id left join
+		branch c on b.member_INbranchID =c.branch_id
+		<where>
+		    	and act_status != 3
+			<if test="actRecActid != null">
+				and act_rec_actid = #{actRecActid,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+	<resultMap type="com.baobao.common.model.ActivityCountModel"
+		id="ActivityCountMap">
+		<result property="number" column="number" />
+		<result property="date" column="date" />
+	</resultMap>
+	<select id="getListForMonths" parameterType="java.lang.Integer"
+		resultMap="ActivityCountMap">
+		SELECT
+		COUNT(act_record_id) as number,
+		date_format(act_repottime, '%Y-%m') as date
+		FROM
+		act_record_tab
+		WHERE
+		act_member_id = #{userId}
+		AND act_status = 2
+		AND date_format(DATE_SUB(CURDATE(), INTERVAL 7 MONTH),'%Y-%m') &lt; date_format(date(act_repottime), '%Y-%m') and date_format(date(act_repottime), '%Y-%m') &lt;= date_format(DATE_SUB(CURDATE(), INTERVAL 1 MONTH),'%Y-%m')
+		GROUP BY
+		date_format(act_repottime, '%Y-%m');
+	</select>
+</mapper>

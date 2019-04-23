@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baobao.common.mapping.SequenceModelMapper" >
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.SequenceModel" >
+    <id column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="SEQ_VALUE" property="seqValue" jdbcType="INTEGER" />
+    <result column="SEQ_INCREMENT" property="seqIncrement" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    NAME, SEQ_VALUE, SEQ_INCREMENT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sequence
+    where NAME = #{name,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sequence
+    where NAME = #{name,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.SequenceModel" >
+    insert into sequence (NAME, SEQ_VALUE, SEQ_INCREMENT
+      )
+    values (#{name,jdbcType=VARCHAR}, #{seqValue,jdbcType=INTEGER}, #{seqIncrement,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.SequenceModel" >
+    insert into sequence
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="seqValue != null" >
+        SEQ_VALUE,
+      </if>
+      <if test="seqIncrement != null" >
+        SEQ_INCREMENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="seqValue != null" >
+        #{seqValue,jdbcType=INTEGER},
+      </if>
+      <if test="seqIncrement != null" >
+        #{seqIncrement,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.SequenceModel" >
+    update sequence
+    <set >
+      <if test="seqValue != null" >
+        SEQ_VALUE = #{seqValue,jdbcType=INTEGER},
+      </if>
+      <if test="seqIncrement != null" >
+        SEQ_INCREMENT = #{seqIncrement,jdbcType=INTEGER},
+      </if>
+    </set>
+    where NAME = #{name,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.SequenceModel" >
+    update sequence
+    set SEQ_VALUE = #{seqValue,jdbcType=INTEGER},
+      SEQ_INCREMENT = #{seqIncrement,jdbcType=INTEGER}
+    where NAME = #{name,jdbcType=VARCHAR}
+  </update>
+   <select id="getId" resultType="java.lang.String">
+   	select NEXTVAL('id') SEQ_VALUE
+  </select>
+</mapper>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baobao.common.mapping.TaskJoinMapper">
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.TaskJoin">
+    <id column="task_join_id" jdbcType="INTEGER" property="taskJoinId" />
+    <result column="task_join_belong" jdbcType="INTEGER" property="taskJoinBelong" />
+    <result column="task_join_user_id" jdbcType="INTEGER" property="taskJoinUserId" />
+    <result column="task_join_finsh_state" jdbcType="INTEGER" property="taskJoinFinshState" />
+    <result column="task_join_finsh_des" jdbcType="VARCHAR" property="taskJoinFinshDes" />
+    <result column="task_join_finsh_time" jdbcType="TIMESTAMP" property="taskJoinFinshTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    task_join_id, task_join_belong, task_join_user_id, task_join_finsh_state, task_join_finsh_des, 
+    task_join_finsh_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from task_join
+    where task_join_id = #{taskJoinId,jdbcType=INTEGER}
+  </select>
+  <select id="selectCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select 
+    count(task_join_user_id)
+    from task_join
+    where task_join_belong = #{taskJoinId,jdbcType=INTEGER} and task_join_finsh_state !=1
+  </select>
+  <select id="selectByTaskAndUser"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from task_join
+    where task_join_belong = #{taskId,jdbcType=INTEGER} and task_join_user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from task_join
+    where task_join_id = #{taskJoinId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.TaskJoin">
+    insert into task_join (task_join_id, task_join_belong, task_join_user_id, 
+      task_join_finsh_state, task_join_finsh_des, task_join_finsh_time
+      )
+    values (#{taskJoinId,jdbcType=INTEGER}, #{taskJoinBelong,jdbcType=INTEGER}, #{taskJoinUserId,jdbcType=INTEGER}, 
+      #{taskJoinFinshState,jdbcType=INTEGER}, #{taskJoinFinshDes,jdbcType=VARCHAR}, #{taskJoinFinshTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertList" >
+    insert into task_join (task_join_belong, task_join_user_id
+      )
+    values 
+    	<foreach collection="userIds" item="userId" separator=",">(
+    	#{taskId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}
+    	)</foreach>
+   
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.TaskJoin">
+    insert into task_join
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskJoinId != null">
+        task_join_id,
+      </if>
+      <if test="taskJoinBelong != null">
+        task_join_belong,
+      </if>
+      <if test="taskJoinUserId != null">
+        task_join_user_id,
+      </if>
+      <if test="taskJoinFinshState != null">
+        task_join_finsh_state,
+      </if>
+      <if test="taskJoinFinshDes != null">
+        task_join_finsh_des,
+      </if>
+      <if test="taskJoinFinshTime != null">
+        task_join_finsh_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskJoinId != null">
+        #{taskJoinId,jdbcType=INTEGER},
+      </if>
+      <if test="taskJoinBelong != null">
+        #{taskJoinBelong,jdbcType=INTEGER},
+      </if>
+      <if test="taskJoinUserId != null">
+        #{taskJoinUserId,jdbcType=INTEGER},
+      </if>
+      <if test="taskJoinFinshState != null">
+        #{taskJoinFinshState,jdbcType=INTEGER},
+      </if>
+      <if test="taskJoinFinshDes != null">
+        #{taskJoinFinshDes,jdbcType=VARCHAR},
+      </if>
+      <if test="taskJoinFinshTime != null">
+        #{taskJoinFinshTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.TaskJoin">
+    update task_join
+    <set>
+      <if test="taskJoinBelong != null">
+        task_join_belong = #{taskJoinBelong,jdbcType=INTEGER},
+      </if>
+      <if test="taskJoinUserId != null">
+        task_join_user_id = #{taskJoinUserId,jdbcType=INTEGER},
+      </if>
+      <if test="taskJoinFinshState != null">
+        task_join_finsh_state = #{taskJoinFinshState,jdbcType=INTEGER},
+      </if>
+      <if test="taskJoinFinshDes != null">
+        task_join_finsh_des = #{taskJoinFinshDes,jdbcType=VARCHAR},
+      </if>
+      <if test="taskJoinFinshTime != null">
+        task_join_finsh_time = #{taskJoinFinshTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where task_join_id = #{taskJoinId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="accept" >
+  	update task_join set task_join_finsh_state = 0 where task_join_belong =#{taskId} and task_join_user_id = #{userId}
+  </update>
+  
+   <update id="finsh" parameterType="com.baobao.common.model.TaskJoin">
+  	update task_join set task_join_finsh_state = 1,task_join_finsh_des=#{taskJoinFinshDes},task_join_finsh_time = #{taskJoinFinshTime} where task_join_belong =#{taskJoinBelong} and task_join_user_id = #{taskJoinUserId}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.TaskJoin">
+    update task_join
+    set task_join_belong = #{taskJoinBelong,jdbcType=INTEGER},
+      task_join_user_id = #{taskJoinUserId,jdbcType=INTEGER},
+      task_join_finsh_state = #{taskJoinFinshState,jdbcType=INTEGER},
+      task_join_finsh_des = #{taskJoinFinshDes,jdbcType=VARCHAR},
+      task_join_finsh_time = #{taskJoinFinshTime,jdbcType=TIMESTAMP}
+    where task_join_id = #{taskJoinId,jdbcType=INTEGER}
+  </update>
+</mapper>

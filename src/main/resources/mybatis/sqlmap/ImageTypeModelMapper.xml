@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baobao.common.mapping.ImageTypeModelMapper" >
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.ImageTypeModel" >
+    <id column="image_id" property="imageId" jdbcType="INTEGER" />
+    <result column="image_type" property="imageType" jdbcType="INTEGER" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
+  </resultMap>
+   <sql id="Base_Column_List" >
+    image_id, image_type,image_url
+  </sql>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select  <include refid="Base_Column_List" />
+    from ImageType
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ImageType
+    where image_id = #{imageId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ImageType
+    where image_id = #{imageId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.ImageTypeModel" >
+    insert into ImageType (image_id, image_type,image_url)
+    values (#{imageId,jdbcType=INTEGER}, #{imageType,jdbcType=INTEGER},#{imageUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.ImageTypeModel" >
+    insert into ImageType
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="imageId != null" >
+        image_id,
+      </if>
+      <if test="imageType != null" >
+        image_type,
+      </if>
+       <if test="imageUrl != null" >
+        image_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="imageId != null" >
+        #{imageId,jdbcType=INTEGER},
+      </if>
+      <if test="imageType != null" >
+        #{imageType,jdbcType=INTEGER},
+      </if>
+      <if test="imageUrl != null" >
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.ImageTypeModel" >
+    update ImageType
+    <set >
+      <if test="imageType != null" >
+        image_type = #{imageType,jdbcType=INTEGER},
+      </if>
+      <if test="imageUrl != null" >
+        image_url = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where image_id = #{imageId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.ImageTypeModel" >
+    update ImageType
+    set image_type = #{imageType,jdbcType=INTEGER},image_url = #{imageUrl,jdbcType=VARCHAR}
+    where image_id = #{imageId,jdbcType=INTEGER}
+  </update>
+</mapper>

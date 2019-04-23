@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baobao.common.mapping.TaskFinshFileMapper">
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.TaskFinshFile">
+    <id column="task_finsh_file_id" jdbcType="INTEGER" property="taskFinshFileId" />
+    <result column="task_finsh_belong" jdbcType="INTEGER" property="taskFinshBelong" />
+    <result column="task_finsh_file_belong" jdbcType="INTEGER" property="taskFinshFileBelong" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    task_finsh_file_id, task_finsh_belong, task_finsh_file_belong
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from task_finsh_file
+    where task_finsh_file_id = #{taskFinshFileId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from task_finsh_file
+    where task_finsh_file_id = #{taskFinshFileId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.TaskFinshFile">
+    insert into task_finsh_file (task_finsh_file_id, task_finsh_belong, 
+      task_finsh_file_belong)
+    values (#{taskFinshFileId,jdbcType=INTEGER}, #{taskFinshBelong,jdbcType=INTEGER}, 
+      #{taskFinshFileBelong,jdbcType=INTEGER})
+  </insert>
+  <insert id="addTaskFinishFile" >
+    insert into task_finsh_file (task_finsh_belong, 
+      task_finsh_file_belong)
+    values 
+    <foreach collection="fileIds" separator="," item="id">
+    	( #{taskJoinId,jdbcType=INTEGER}, 
+      #{id,jdbcType=INTEGER})
+    	
+    </foreach>
+    
+  </insert>
+  <insert id="addTaskFinishFileList" >
+    insert into task_finsh_file (task_finsh_belong, 
+      task_finsh_file_belong)
+    values 
+    <foreach collection="fileIds" separator="," item="id">
+    	( #{taskJoinId,jdbcType=INTEGER}, 
+      #{id,jdbcType=INTEGER})
+    	
+    </foreach>
+    
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.TaskFinshFile">
+    insert into task_finsh_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskFinshFileId != null">
+        task_finsh_file_id,
+      </if>
+      <if test="taskFinshBelong != null">
+        task_finsh_belong,
+      </if>
+      <if test="taskFinshFileBelong != null">
+        task_finsh_file_belong,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskFinshFileId != null">
+        #{taskFinshFileId,jdbcType=INTEGER},
+      </if>
+      <if test="taskFinshBelong != null">
+        #{taskFinshBelong,jdbcType=INTEGER},
+      </if>
+      <if test="taskFinshFileBelong != null">
+        #{taskFinshFileBelong,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.TaskFinshFile">
+    update task_finsh_file
+    <set>
+      <if test="taskFinshBelong != null">
+        task_finsh_belong = #{taskFinshBelong,jdbcType=INTEGER},
+      </if>
+      <if test="taskFinshFileBelong != null">
+        task_finsh_file_belong = #{taskFinshFileBelong,jdbcType=INTEGER},
+      </if>
+    </set>
+    where task_finsh_file_id = #{taskFinshFileId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.TaskFinshFile">
+    update task_finsh_file
+    set task_finsh_belong = #{taskFinshBelong,jdbcType=INTEGER},
+      task_finsh_file_belong = #{taskFinshFileBelong,jdbcType=INTEGER}
+    where task_finsh_file_id = #{taskFinshFileId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baobao.common.mapping.ActivityModelMapper" >
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.ActivityModel" >
+    <id column="activity_id" property="activityId" jdbcType="INTEGER" />
+    <result column="activity_title" property="activityTitle" jdbcType="VARCHAR" />
+    <result column="activity_context" property="activityContext" jdbcType="VARCHAR" />
+    <result column="activity_place" property="activityPlace" jdbcType="VARCHAR" />
+    <result column="activity_leaderName" property="activityLeadername" jdbcType="VARCHAR" />
+    <result column="activity_leaderID" property="activityLeaderid" jdbcType="INTEGER" />
+    <result column="activity_createtime" property="activityCreatetime" jdbcType="TIMESTAMP" />
+    <result column="activity_starttime" property="activityStarttime" jdbcType="TIMESTAMP" />
+    <result column="activity_endtime" property="activityEndtime" jdbcType="TIMESTAMP" />
+    <result column="activity_grade" property="activityGrade" jdbcType="INTEGER" />
+    <result column="activity_status" property="activityStatus" jdbcType="INTEGER" />
+    <result column="activity_latitude" property="latitude" jdbcType="DOUBLE" />
+    <result column="activity_longitude" property="longitude" jdbcType="DOUBLE" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List" >
+    activity_id, activity_title, activity_context, activity_place, activity_leaderName, 
+    activity_leaderID, activity_createtime, activity_starttime, activity_endtime,activity_grade,activity_status,
+  	activity_latitude,activity_longitude
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select 
+    <include refid="Base_Column_List" />
+    from activity_tab
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </select>
+  <select id="getActivitiesByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List"></include>
+  	from activity_tab
+  	where activity_leaderID = #{activityLeaderid,jdbcType=INTEGER} order by activity_createtime
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from activity_tab
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.ActivityModel" >
+    insert into activity_tab (activity_id, activity_title, activity_context, 
+      activity_place, activity_leaderName, activity_leaderID, 
+      activity_createtime, activity_starttime, 
+      activity_endtime,activity_latitude,activity_longitude)
+    values (#{activityId,jdbcType=INTEGER}, #{activityTitle,jdbcType=VARCHAR}, #{activityContext,jdbcType=VARCHAR}, 
+      #{activityPlace,jdbcType=VARCHAR}, #{activityLeadername,jdbcType=VARCHAR}, #{activityLeaderid,jdbcType=INTEGER}, 
+      #{activityCreatetime,jdbcType=TIMESTAMP}, #{activityStarttime,jdbcType=TIMESTAMP}, 
+      #{activityEndtime,jdbcType=TIMESTAMP},#{latitude,jdbcType=DOUBLE},#{longitude,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.ActivityModel" >
+    insert into activity_tab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="activityId != null" >
+        activity_id,
+      </if>
+      <if test="activityTitle != null" >
+        activity_title,
+      </if>
+      <if test="activityContext != null" >
+        activity_context,
+      </if>
+      <if test="activityPlace != null" >
+        activity_place,
+      </if>
+      <if test="activityLeadername != null" >
+        activity_leaderName,
+      </if>
+      <if test="activityLeaderid != null" >
+        activity_leaderID,
+      </if>
+      <if test="activityCreatetime != null" >
+        activity_createtime,
+      </if>
+      <if test="activityStarttime != null" >
+        activity_starttime,
+      </if>
+      <if test="activityEndtime != null" >
+        activity_endtime,
+      </if>
+       <if test="activityGrade != null" >
+        activity_grade,
+      </if>
+       <if test="activityStatus != null" >
+        activity_status,
+      </if>
+      <if test="latitude !=null">
+      	activity_latitude,
+      </if>
+       <if test="longitude!=null">
+      	activity_longitude,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="activityId != null" >
+        #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="activityTitle != null" >
+        #{activityTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="activityContext != null" >
+        #{activityContext,jdbcType=VARCHAR},
+      </if>
+      <if test="activityPlace != null" >
+        #{activityPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="activityLeadername != null" >
+        #{activityLeadername,jdbcType=VARCHAR},
+      </if>
+      <if test="activityLeaderid != null" >
+        #{activityLeaderid,jdbcType=INTEGER},
+      </if>
+      <if test="activityCreatetime != null" >
+        #{activityCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityStarttime != null" >
+        #{activityStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityEndtime != null" >
+        #{activityEndtime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="activityGrade != null" >
+        #{activityGrade,jdbcType=INTEGER},
+      </if>
+       <if test="activityStatus != null" >
+        #{activityStatus,jdbcType=INTEGER},
+      </if>
+      <if test="latitude !=null">
+      	#{latitude,jdbcType=DOUBLE},
+      </if>
+       <if test="longitude!=null">
+      	#{longitude,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.ActivityModel" >
+    update activity_tab
+    <set >
+      <if test="activityTitle != null" >
+        activity_title = #{activityTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="activityContext != null" >
+        activity_context = #{activityContext,jdbcType=VARCHAR},
+      </if>
+      <if test="activityPlace != null" >
+        activity_place = #{activityPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="activityLeadername != null" >
+        activity_leaderName = #{activityLeadername,jdbcType=VARCHAR},
+      </if>
+      <if test="activityLeaderid != null" >
+        activity_leaderID = #{activityLeaderid,jdbcType=INTEGER},
+      </if>
+      <if test="activityCreatetime != null" >
+        activity_createtime = #{activityCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityStarttime != null" >
+        activity_starttime = #{activityStarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activityEndtime != null" >
+        activity_endtime = #{activityEndtime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="activityGrade != null" >
+        activity_grade = #{activityGrade,jdbcType=INTEGER},
+      </if>
+       <if test="activityStatus != null" >
+        activity_status = #{activityStatus,jdbcType=INTEGER},
+      </if>
+        <if test="latitude !=null">
+      	activity_latitude = #{latitude,jdbcType=DOUBLE},
+      </if>
+       <if test="longitude!=null">
+      	activity_longitude = #{longitude,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.ActivityModel" >
+    update activity_tab
+    set activity_title = #{activityTitle,jdbcType=VARCHAR},
+      activity_context = #{activityContext,jdbcType=VARCHAR},
+      activity_place = #{activityPlace,jdbcType=VARCHAR},
+      activity_leaderName = #{activityLeadername,jdbcType=VARCHAR},
+      activity_leaderID = #{activityLeaderid,jdbcType=INTEGER},
+      activity_createtime = #{activityCreatetime,jdbcType=TIMESTAMP},
+      activity_starttime = #{activityStarttime,jdbcType=TIMESTAMP},
+      activity_endtime = #{activityEndtime,jdbcType=TIMESTAMP}
+    where activity_id = #{activityId,jdbcType=INTEGER}
+  </update>
+  <update id="updateBublishStatus" parameterType="java.lang.Integer">
+  	update activity_tab set activity_status = 1 where activity_id  = #{activityId,jdbcType=INTEGER}
+  </update>
+   <resultMap id="Resultapp" type="com.baobao.common.model.ActivityMobile" >
+    <id column="activity_id" property="id" jdbcType="INTEGER" />
+    <result column="activity_title" property="title" jdbcType="VARCHAR" />
+    <result column="activity_context" property="describe" jdbcType="VARCHAR" />
+    <result column="activity_place" property="address" jdbcType="VARCHAR" />
+    <result column="activity_leaderName" property="initiator" jdbcType="VARCHAR" />
+    <result column="activity_starttime" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="activity_endtime" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="activity_grade" property="grade" jdbcType="INTEGER" />
+    <result column="activity_status" property="state" jdbcType="INTEGER" />
+    <result column="act_push_status" property="pushState" jdbcType="INTEGER" />
+    <result column="activity_latitude" property="latitude" jdbcType="DOUBLE" />
+    <result column="activity_longitude" property="longitude" jdbcType="DOUBLE" />
+    <collection property="participantsList" ofType="com.baobao.common.model.ChildModel">
+		<id property="brId" column="act_member_id"/>
+		<result property="brName" column="member_name"/>
+	</collection>
+  </resultMap>
+  <select id="getActByManager" resultMap="Resultapp" parameterType="java.util.Map">
+  	<if test="status==3">
+  	SELECT
+	activity_id,
+	activity_title,
+	activity_context,
+	activity_place,
+	activity_leaderName,
+	activity_starttime,
+	activity_endtime,
+	activity_grade,
+	activity_status,
+	activity_latitude,
+	activity_longitude,
+	tempAct_joinid AS act_member_id,
+	c.party_branch_name AS member_name,
+	act_push_status
+	FROM
+	(
+		SELECT
+			*
+		FROM
+			activity_tab
+		WHERE
+			activity_leaderID = #{uid,jdbcType=INTEGER}
+		ORDER BY
+			activity_status,
+			activity_createtime DESC
+		LIMIT #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+	) a
+	LEFT JOIN tempAct_tab b ON a.activity_id = b.tempAct_actid
+	LEFT JOIN party_branch_tab c ON b.tempAct_joinid = c.party_id
+	LEFT JOIN act_push_rec_tab d ON a.activity_id = d.act_push_actid
+	ORDER BY
+	activity_status ASC,
+	activity_createtime DESC
+  	</if>
+  	<if test="status==2">
+  	SELECT
+	activity_id,
+	activity_title,
+	activity_context,
+	activity_place,
+	activity_leaderName,
+	activity_starttime,
+	activity_endtime,
+	activity_grade,
+	activity_status,
+	activity_latitude,
+	activity_longitude,
+	tempAct_joinid AS act_member_id,
+	c.branch_name AS member_name,
+	a.act_push_status
+	FROM
+	(
+		SELECT DISTINCT
+			a.*,b.act_push_status
+		FROM
+			activity_tab a
+		LEFT JOIN act_push_rec_tab b ON a.activity_id = b.act_push_actid
+		WHERE
+		a.activity_leaderID = #{uid,jdbcType=INTEGER} 
+		OR b.act_push_branchid = #{brId,jdbcType=INTEGER}
+		ORDER BY
+			activity_status,
+			activity_createtime DESC
+		LIMIT #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+	) a
+	LEFT JOIN tempAct_tab b ON a.activity_id = b.tempAct_actid
+	LEFT JOIN branch c ON b.tempAct_joinid = c.branch_id
+	LEFT JOIN act_push_rec_tab d ON a.activity_id = d.act_push_actid
+	ORDER BY
+	activity_status ASC,
+	activity_createtime DESC
+  	</if>
+  	<if test="status==1">
+  	SELECT
+	activity_id,
+	activity_title,
+	activity_context,
+	activity_place,
+	activity_leaderName,
+	activity_starttime,
+	activity_endtime,
+	activity_grade,
+	activity_status,
+	activity_latitude,
+	activity_longitude,
+	tempAct_joinid AS act_member_id,
+	member_name,
+	a.act_push_status
+	FROM
+	(
+		SELECT DISTINCT
+			a.*,b.act_push_status
+		FROM
+			activity_tab a
+		LEFT JOIN act_push_rec_tab b ON a.activity_id = b.act_push_actid
+		WHERE
+			a.activity_leaderID = #{uid,jdbcType=INTEGER} 
+		OR b.act_push_branchid = #{brId,jdbcType=INTEGER}
+		ORDER BY
+			activity_status,
+			activity_createtime DESC
+		LIMIT #{start,jdbcType=INTEGER},#{end,jdbcType=INTEGER}
+	) a
+	LEFT JOIN tempAct_tab b ON a.activity_id = b.tempAct_actid
+	LEFT JOIN member_tab c ON b.tempAct_joinid = c.member_id
+	LEFT JOIN act_push_rec_tab d ON a.activity_id = d.act_push_actid
+	ORDER BY
+	activity_status ASC,
+	activity_createtime DESC
+  	</if>
+  </select>
+</mapper>

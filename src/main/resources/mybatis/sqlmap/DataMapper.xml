@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baobao.common.mapping.DataMapper">
+
+	<resultMap type="com.baobao.common.model.andshow.ActBranchCountModel" id="Count_Model">
+		<result property="branchName" column="branch_name" jdbcType="VARCHAR"/>
+		<result property="actNumber" column="act_number" jdbcType="INTEGER"/>
+		<result property="peopleNumber" column="people_number" jdbcType="INTEGER"/>
+	</resultMap>
+	
+	<sql id="People_Condition">
+		<if test="type ==1">
+			<where>
+						MONTH (activity_start_time) &lt;= MONTH (NOW()) - 1
+					AND MONTH (activity_end_time) &gt;= MONTH (NOW()) - 1
+					AND MONTH (comment_time) &lt;= MONTH (NOW()) - 1
+			</where>
+		</if>
+		<if test="type ==2">
+			<where>
+						YEAR (activity_start_time) &lt;= YEAR (NOW()) - 1
+					AND YEAR (activity_end_time) &gt;= YEAR (NOW()) - 1
+					AND YEAR (comment_time) &lt;= YEAR (NOW()) - 1
+			</where>
+		</if>
+	</sql>
+	<sql id="Act_Condition">
+		<if test="type ==1">
+			<where>
+						MONTH (activity_start_time) &lt;= MONTH (NOW()) - 1
+					AND MONTH (activity_end_time) &gt;= MONTH (NOW()) - 1
+			</where>
+		</if>
+		<if test="type ==2">
+			<where>
+						YEAR (activity_start_time) &lt;= YEAR (NOW()) - 1
+					AND YEAR (activity_end_time) &gt;= YEAR (NOW()) - 1
+			</where>
+		</if>
+	</sql>
+	<sql id="Task_Condition">
+		<if test="type ==1">
+			<where>
+						MONTH (task_create_time) &lt;= MONTH (NOW()) - 1
+					AND MONTH (task_deadline) &gt;= MONTH (NOW()) - 1
+			</where>
+		</if>
+		<if test="type ==2">
+			<where>
+						YEAR (task_create_time) &lt;= YEAR (NOW()) - 1
+					AND YEAR (task_deadline) &gt;= YEAR (NOW()) - 1
+			</where>
+		</if>
+	</sql>
+	<sql id="Study_Condition">
+		<if test="type ==1">
+			<where>
+						MONTH (stu_date) = MONTH (NOW()) - 1
+			</where>
+		</if>
+		<if test="type ==2">
+			<where>
+				YEAR (stu_date) = YEAR (NOW()) - 1
+			</where>
+		</if>
+	</sql>
+	
+	<sql id="Task_Case">
+	
+		<if test="type ==1">
+			CASE
+			WHEN nofinish_tab.task_deadline &gt;= task_join_finsh_time
+			AND task_join_finsh_state = 1 THEN
+				10
+			WHEN MONTH (task_deadline) &lt;= MONTH (NOW())
+			AND task_join_finsh_state != 1 THEN
+				- 10
+			ELSE
+				0
+			END
+		</if>
+		<if test="type ==2">
+			CASE
+			WHEN nofinish_tab.task_deadline  &gt;= task_join_finsh_time
+			AND task_join_finsh_state = 1 THEN
+				10
+			WHEN YEAR (task_deadline) &lt;= YEAR (NOW())
+			AND task_join_finsh_state != 1 THEN
+				- 10
+			ELSE
+				0
+			END
+		</if>
+	
+		
+	</sql>
+	
+	<sql id="comment_condition">
+		MONTH (comment_time) = MONTH (NOW()) - 1
+	</sql>
+	
+	<sql id="branch_condition">
+		<where>
+			<if test="branchId !=null">
+			 branch_id = #{branchId}
+		</if>
+		</where>
+		
+	</sql>
+	
+	
+	
+	
+	
+	<!--  -->
+	<sql id="People_Condition_temp">
+		<if test="type ==1">
+			<where>
+						MONTH (activity_start_time) &lt;= MONTH (NOW())
+					AND MONTH (activity_end_time) &gt;= MONTH (NOW()) 
+					AND MONTH (comment_time) &lt;= MONTH (NOW()) 
+			</where>
+		</if>
+		<if test="type ==2">
+			<where>
+						YEAR (activity_start_time) &lt;= YEAR (NOW()) 
+					AND YEAR (activity_end_time) &gt;= YEAR (NOW())
+					AND YEAR (comment_time) &lt;= YEAR (NOW()) 
+			</where>
+		</if>
+	</sql>
+	<sql id="Act_Condition_temp">
+		<if test="type ==1">
+			<where>
+						MONTH (activity_start_time) &lt;= MONTH (NOW()) 
+					AND MONTH (activity_end_time) &gt;= MONTH (NOW()) 
+			</where>
+		</if>
+		<if test="type ==2">
+			<where>
+						YEAR (activity_start_time) &lt;= YEAR (NOW()) 
+					AND YEAR (activity_end_time) &gt;= YEAR (NOW()) 
+			</where>
+		</if>
+	</sql>
+	<sql id="Task_Condition_temp">
+		<if test="type ==1">
+			<where>
+						MONTH (task_create_time) &lt;= MONTH (NOW()) 
+					AND MONTH (task_deadline) &gt;= MONTH (NOW())
+			</where>
+		</if>
+		<if test="type ==2">
+			<where>
+						YEAR (task_create_time) &lt;= YEAR (NOW()) 
+					AND YEAR (task_deadline) &gt;= YEAR (NOW()) 
+			</where>
+		</if>
+	</sql>
+	<sql id="Study_Condition_temp">
+		<if test="type ==1">
+			<where>
+						MONTH (stu_date) = MONTH (NOW()) 
+			</where>
+		</if>
+		<if test="type ==2">
+			<where>
+				YEAR (stu_date) = YEAR (NOW()) 
+			</where>
+		</if>
+	</sql>
+	
+	
+	<sql id="Task_Case_temp">
+	
+		<if test="type ==1">
+			CASE
+			WHEN nofinish_tab.task_deadline &gt;= task_join_finsh_time
+			AND task_join_finsh_state = 1 THEN
+				10
+			WHEN task_deadline &lt;= NOW()
+			AND task_join_finsh_state != 1 THEN
+				- 10
+			ELSE
+				0
+			END
+		</if>
+		<if test="type ==2">
+			CASE
+			WHEN nofinish_tab.task_deadline  &gt;= task_join_finsh_time
+			AND task_join_finsh_state = 1 THEN
+				10
+			WHEN task_deadline &lt;= YEAR (NOW())
+			AND task_join_finsh_state != 1 THEN
+				- 10
+			ELSE
+				0
+			END
+		</if>
+	
+		
+	</sql>
+	<sql id="comment_condition_temp">
+		MONTH (comment_time) = MONTH (NOW()) 
+	</sql>
+	
+	
+	
+	
+	
+	
+	
+	<select id="getActBranchCount" parameterType="java.lang.Integer" resultMap="Count_Model">
+	
+	SELECT
+	branch_name,
+	act_number,
+	people_number
+FROM
+	(
+		SELECT
+			IFNULL(people_number, 0) AS people_number,
+			branch_id
+		FROM
+			branch
+		LEFT JOIN (
+			SELECT
+				people_number,
+				member_INbranchID
+			FROM
+				(
+					SELECT
+						COUNT(DISTINCT comment_user_id) AS people_number,
+						activity_create_user_id
+					FROM
+						activity
+					LEFT JOIN COMMENT ON comment_object_id = activity_id
+					<include refid="People_Condition_temp"></include>
+				) AS people_tab
+			LEFT JOIN member_tab ON people_tab.activity_create_user_id = member_id
+		) AS people_number_tab ON people_number_tab.member_INbranchID = branch_id
+		WHERE
+			br_isdeleted = 0
+	) AS people_number_tab
+LEFT JOIN (
+	SELECT
+		IFNULL(sum(number),0) AS act_number,
+		branch_name,
+		branch_id
+	FROM
+		branch
+	LEFT JOIN (
+		SELECT
+			number,
+			member_INbranchID
+		FROM
+			(
+				SELECT
+					COUNT(activity_id) AS number,
+					activity_create_user_id
+				FROM
+					activity
+					<include refid="Act_Condition_temp"></include>
+				GROUP BY
+					activity_create_user_id
+			) AS act_tab
+		LEFT JOIN member_tab ON act_tab.activity_create_user_id = member_id
+	) AS number_tab ON number_tab.member_INbranchID = branch_id
+	WHERE br_isdeleted = 0
+GROUP BY branch_id
+) AS number_tab ON people_number_tab.branch_id = number_tab.branch_id
+ORDER BY
+	act_number desc
+
+	</select>
+	
+	<resultMap type="com.baobao.common.model.andshow.CountScore" id="CountScore">
+		<result property="memberName" column="member_name" jdbcType="VARCHAR"/>
+		<result property="branchName" column="branch_name" jdbcType="VARCHAR"/>
+		<result property="actScore" column="act_score" jdbcType="FLOAT"/>
+		<result property="taskScore" column="task_score" jdbcType="FLOAT"/>
+		<result property="studyScore" column="study_score" jdbcType="FLOAT"/>
+		<result property="allScore" column="all_score" jdbcType="FLOAT"/>
+		
+	</resultMap>
+	
+	<select id="getCountScore" parameterType="com.baobao.common.cmd.DataCmd" resultMap="CountScore">
+		SELECT
+	member_id,
+	member_name,
+	branch_name,
+	IFNULL(act_tab.act_score, 0) AS act_score,
+	IFNULL(stu_tab.study_score, 0) AS study_score,
+	IFNULL(task_tab.task_score, 0) AS task_score,
+	IFNULL(act_tab.act_score, 0) + IFNULL(stu_tab.study_score, 0) + IFNULL(task_tab.task_score, 0) AS all_score
+FROM
+	(SELECT * from 
+	member_tab
+LEFT JOIN branch ON member_INbranchID = branch_id
+ <include refid="branch_condition"></include>) as member_tab
+LEFT JOIN (
+	SELECT
+		COUNT(DISTINCT comment_object_id) * 5 AS act_score,
+		comment_user_id
+	FROM
+		COMMENT
+	WHERE
+		<include refid="comment_condition_temp"></include>
+	AND comment_object_id IN (
+		SELECT
+			activity.activity_id
+		FROM
+			activity
+		<include refid="Act_Condition_temp"></include>
+	)
+	GROUP BY
+		comment_user_id
+) AS act_tab ON act_tab.comment_user_id = member_id
+LEFT JOIN (
+	SELECT
+		sum(
+
+			IF (
+				today_time > 10,
+				10,
+				today_time
+			)
+		) AS study_score,
+		stu_member_id
+	FROM
+		studyrecord_tab
+	<include refid="Study_Condition_temp"></include>
+	GROUP BY
+		stu_member_id
+) AS stu_tab ON stu_tab.stu_member_id = member_id
+LEFT JOIN (
+	SELECT
+		SUM(
+			<include refid="Task_Case_temp"></include>
+		) AS task_score,
+		task_join_user_id
+	FROM
+		(
+			SELECT
+				task_id,
+				task_deadline
+			FROM
+				task
+			<include refid="Task_Condition_temp"></include>
+		) AS nofinish_tab
+	LEFT JOIN task_join ON nofinish_tab.task_id = task_join_belong
+	GROUP BY
+		task_join_user_id
+) AS task_tab ON task_tab.task_join_user_id = member_id
+WHERE
+	member_isdeleted = 1
+AND member_INbranchID !=- 1
+ORDER BY all_score desc
+	
+	</select>
+	
+	
+</mapper>

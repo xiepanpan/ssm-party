@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baobao.common.mapping.PayInfoModelMapper" >
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.PayInfoModel" >
+    <id column="pay_id" property="payId" jdbcType="INTEGER" />
+    <result column="pay_fees" property="payFees" jdbcType="DOUBLE" />
+    <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+    <result column="pay_tel" property="payTel" jdbcType="VARCHAR" />
+    <result column="pay_month" property="payMonth" jdbcType="TIMESTAMP" />
+    <result column="pay_name" property="payName" jdbcType="VARCHAR"/>
+    <result column="pay_brId" property="payBrId" jdbcType="INTEGER"/>
+    <result column="pay_brName" property="payBrName" jdbcType="VARCHAR"/>
+  </resultMap>
+  <resultMap id="PayResultMap" type="com.baobao.common.model.ContributionRecordModel" >
+    <result column="pay_fees" property="money" jdbcType="FLOAT" />
+    <result column="pay_status" property="typeName" jdbcType="INTEGER" />
+    <result column="pay_month" property="date" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pay_id, pay_fees, pay_status, pay_tel, pay_month,pay_name,pay_brId,pay_brName
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pay_tab
+    where pay_id = #{payId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pay_tab
+    where pay_id = #{payId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.PayInfoModel" >
+    insert into pay_tab (pay_id, pay_fees, pay_status, 
+      pay_tel, pay_month)
+    values (#{payId,jdbcType=INTEGER}, #{payFees,jdbcType=DOUBLE}, #{payStatus,jdbcType=INTEGER}, 
+      #{payTel,jdbcType=VARCHAR}, #{payMonth,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.PayInfoModel" >
+    insert into pay_tab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="payId != null" >
+        pay_id,
+      </if>
+      <if test="payFees != null" >
+        pay_fees,
+      </if>
+      <if test="payStatus != null" >
+        pay_status,
+      </if>
+      <if test="payTel != null" >
+        pay_tel,
+      </if>
+      <if test="payMonth != null" >
+        pay_month,
+      </if>
+      <if test="payName != null">
+      	pay_name,
+      </if>
+      <if test="payBrId !=null">
+      	pay_brId,
+      </if>
+      <if test="payBrName !=null">
+      	pay_brName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="payId != null" >
+        #{payId,jdbcType=INTEGER},
+      </if>
+      <if test="payFees != null" >
+        #{payFees,jdbcType=DOUBLE},
+      </if>
+      <if test="payStatus != null" >
+        #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="payTel != null" >
+        #{payTel,jdbcType=VARCHAR},
+      </if>
+      <if test="payMonth != null" >
+        #{payMonth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payName != null">
+      	#{payName,jdbcType=VARCHAR},
+      </if>
+      <if test="payBrId !=null">
+      	#{payBrId,jdbcType=INTEGER},
+      </if>
+      <if test="payBrName !=null">
+      	#{payBrName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.PayInfoModel" >
+    update pay_tab
+    <set >
+      <if test="payFees != null" >
+        pay_fees = #{payFees,jdbcType=DOUBLE},
+      </if>
+      <if test="payStatus != null" >
+        pay_status = #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="payTel != null" >
+        pay_tel = #{payTel,jdbcType=VARCHAR},
+      </if>
+      <if test="payMonth != null" >
+        pay_month = #{payMonth,jdbcType=TIMESTAMP},
+      </if>
+       <if test="payName != null">
+      	pay_name = #{payName,jdbcType=VARCHAR},
+      </if>
+      <if test="payBrId !=null">
+       pay_brId = 	#{payBrId,jdbcType=INTEGER},
+      </if>
+      <if test="payBrName !=null">
+      	pay_brName = #{payBrName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pay_id = #{payId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.PayInfoModel" >
+    update pay_tab
+    set pay_fees = #{payFees,jdbcType=DOUBLE},
+      pay_status = #{payStatus,jdbcType=INTEGER},
+      pay_tel = #{payTel,jdbcType=VARCHAR},
+      pay_month = #{payMonth,jdbcType=TIMESTAMP}
+    where pay_id = #{payId,jdbcType=INTEGER}
+  </update>
+  <select id="getPayList" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"></include> from pay_tab order by pay_month desc
+  </select>
+  <select id="getPayModel" parameterType="java.lang.String" resultMap="PayResultMap">
+  	select pay_fees, pay_status,pay_month from pay_tab 
+  	 where  year(pay_month) = year(now()) and pay_tel = #{payTel,jdbcType=VARCHAR}  and pay_status = 1
+  </select>
+  <select id="getMonMoney" parameterType="java.lang.String" resultType="java.lang.Float">
+   select ifnull(pay_fees,0)  from pay_tab where  pay_tel =#{payTel,jdbcType=VARCHAR} and month(pay_month) = month(now()) and pay_status = 0
+  </select>
+  <select id="getYearMoney" parameterType="java.lang.String" resultType="java.lang.Float">
+  	 select ifnull(sum(pay_fees),0) from pay_tab where  pay_tel = #{payTel,jdbcType=VARCHAR} and year(pay_month) = year(now()) and pay_status = 1
+  </select> 
+  <select id="getAllMoney" parameterType="java.lang.String" resultType="java.lang.Float">
+  	 select  ifnull(sum(pay_fees),0) from pay_tab where  pay_tel = #{payTel,jdbcType=VARCHAR} and pay_status = 1
+  </select>
+  <select id="getPayModelByYear" parameterType="java.util.Map" resultMap="PayResultMap">
+  	select pay_fees, pay_status,pay_month from pay_tab 
+  	 where  year(pay_month) = #{year} and pay_tel = #{tel}  and pay_status = 1
+  </select>
+  <delete id="deleteBatch">
+  	delete from pay_tab where pay_id in (<foreach collection="list" item="id" separator=",">#{id}</foreach>)
+  </delete>
+  <select id="getPayInfoBypartId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	SELECT
+	<include refid="Base_Column_List" />
+	FROM
+		pay_tab pay
+	LEFT JOIN member_tab mem ON pay.pay_tel = mem.member_tel
+	LEFT JOIN branch br ON mem.member_INbranchID = br.branch_id
+	WHERE
+	br.branch_father_id = #{brId}
+  </select>
+</mapper>

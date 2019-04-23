@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baobao.common.mapping.PartyBranchModelMapper" >
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.PartyBranchModel" >
+    <id column="party_id" property="partyId" jdbcType="INTEGER" />
+    <result column="party_branch_name" property="partyBranchName" jdbcType="VARCHAR" />
+    <result column="party_branch_secretary_id" property="partyBranchSecretaryId" jdbcType="INTEGER" />
+    <result column="party_branch_secretary" property="partyBranchSecretary" jdbcType="VARCHAR" />
+    <result column="party_branch_organization_id" property="partyBranchOrganizationId" jdbcType="INTEGER" />
+    <result column="party_branch_organization" property="partyBranchOrganization" jdbcType="VARCHAR" />
+    <result column="party_branch_publicity_id" property="partyBranchPublicityId" jdbcType="INTEGER" />
+    <result column="party_branch_publicity" property="partyBranchPublicity" jdbcType="VARCHAR" />
+    <result column="party_branch_type" property="partyBranchType" jdbcType="INTEGER" />
+    <result column="party_branch_del" property="partyBranchDel" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    party_id, party_branch_name,party_branch_secretary_id, party_branch_secretary,party_branch_organization_id, 
+    party_branch_organization,party_branch_publicity_id, party_branch_publicity, party_branch_type,party_branch_del
+  </sql>
+  <sql id="Condition">
+  	1=1
+  	<if test="searchValue!=null and searchValue!=''">
+  		and (
+  			party_branch_name LIKE concat('%',concat(#{searchValue},'%'))
+	    	or party_branch_secretary LIKE concat('%',concat(#{searchValue},'%'))
+	    	or party_branch_organization   LIKE  concat('%',concat(#{searchValue},'%'))
+	    	or party_branch_publicity   LIKE  concat('%',concat(#{searchValue},'%'))
+	    )
+  	</if>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from party_branch_tab
+    where party_id = #{partyId,jdbcType=INTEGER}
+  </select>
+  <select id="selectFaculty" resultMap="BaseResultMap" parameterType="com.baobao.common.cmd.PartyCmd">
+    select 
+    <include refid="Base_Column_List" />
+    from party_branch_tab
+    where <include refid="Condition"></include> and party_branch_del = 1 and party_branch_type=1
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.baobao.common.cmd.PartyCmd">
+    select 
+    <include refid="Base_Column_List" />
+    from party_branch_tab
+    where  <include refid="Condition"></include> and party_branch_del = 1 ORDER BY party_branch_type
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from party_branch_tab
+    where party_id = #{partyId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.PartyBranchModel" >
+    insert into party_branch_tab (party_id, party_branch_name, party_branch_secretary_id, 
+      party_branch_secretary, party_branch_organization_id, 
+      party_branch_organization, party_branch_publicity_id, 
+      party_branch_publicity, party_branch_type, 
+      party_branch_del)
+    values (#{partyId,jdbcType=INTEGER}, #{partyBranchName,jdbcType=VARCHAR}, #{partyBranchSecretaryId,jdbcType=INTEGER}, 
+      #{partyBranchSecretary,jdbcType=VARCHAR}, #{partyBranchOrganizationId,jdbcType=INTEGER}, 
+      #{partyBranchOrganization,jdbcType=VARCHAR}, #{partyBranchPublicityId,jdbcType=INTEGER}, 
+      #{partyBranchPublicity,jdbcType=VARCHAR}, #{partyBranchType,jdbcType=INTEGER}, 
+      #{partyBranchDel,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.PartyBranchModel" >
+    insert into party_branch_tab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="partyId != null" >
+        party_id,
+      </if>
+      <if test="partyBranchName != null" >
+        party_branch_name,
+      </if>
+      <if test="partyBranchSecretaryId != null" >
+        party_branch_secretary_id,
+      </if>
+      <if test="partyBranchSecretary != null" >
+        party_branch_secretary,
+      </if>
+      <if test="partyBranchOrganizationId != null" >
+        party_branch_organization_id,
+      </if>
+      <if test="partyBranchOrganization != null" >
+        party_branch_organization,
+      </if>
+      <if test="partyBranchPublicityId != null" >
+        party_branch_publicity_id,
+      </if>
+      <if test="partyBranchPublicity != null" >
+        party_branch_publicity,
+      </if>
+      <if test="partyBranchType != null" >
+        party_branch_type,
+      </if>
+      <if test="partyBranchDel != null" >
+        party_branch_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="partyId != null" >
+        #{partyId,jdbcType=INTEGER},
+      </if>
+      <if test="partyBranchName != null" >
+        #{partyBranchName,jdbcType=VARCHAR},
+      </if>
+      <if test="partyBranchSecretaryId != null" >
+        #{partyBranchSecretaryId,jdbcType=INTEGER},
+      </if>
+      <if test="partyBranchSecretary != null" >
+        #{partyBranchSecretary,jdbcType=VARCHAR},
+      </if>
+      <if test="partyBranchOrganizationId != null" >
+        #{partyBranchOrganizationId,jdbcType=INTEGER},
+      </if>
+      <if test="partyBranchOrganization != null" >
+        #{partyBranchOrganization,jdbcType=VARCHAR},
+      </if>
+      <if test="partyBranchPublicityId != null" >
+        #{partyBranchPublicityId,jdbcType=INTEGER},
+      </if>
+      <if test="partyBranchPublicity != null" >
+        #{partyBranchPublicity,jdbcType=VARCHAR},
+      </if>
+      <if test="partyBranchType != null" >
+        #{partyBranchType,jdbcType=INTEGER},
+      </if>
+      <if test="partyBranchDel != null" >
+        #{partyBranchDel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.PartyBranchModel" >
+    update party_branch_tab
+    <set >
+      <if test="partyBranchName != null" >
+        party_branch_name = #{partyBranchName,jdbcType=VARCHAR},
+      </if>
+      <if test="partyBranchSecretaryId != null" >
+        party_branch_secretary_id = #{partyBranchSecretaryId,jdbcType=INTEGER},
+      </if>
+      <if test="partyBranchSecretary != null" >
+        party_branch_secretary = #{partyBranchSecretary,jdbcType=VARCHAR},
+      </if>
+      <if test="partyBranchOrganizationId != null" >
+        party_branch_organization_id = #{partyBranchOrganizationId,jdbcType=INTEGER},
+      </if>
+      <if test="partyBranchOrganization != null" >
+        party_branch_organization = #{partyBranchOrganization,jdbcType=VARCHAR},
+      </if>
+      <if test="partyBranchPublicityId != null" >
+        party_branch_publicity_id = #{partyBranchPublicityId,jdbcType=INTEGER},
+      </if>
+      <if test="partyBranchPublicity != null" >
+        party_branch_publicity = #{partyBranchPublicity,jdbcType=VARCHAR},
+      </if>
+      <if test="partyBranchType != null" >
+        party_branch_type = #{partyBranchType,jdbcType=INTEGER},
+      </if>
+      <if test="partyBranchDel != null" >
+        party_branch_del = #{partyBranchDel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where party_id = #{partyId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.PartyBranchModel" >
+    update party_branch_tab
+    set party_branch_name = #{partyBranchName,jdbcType=VARCHAR},
+      party_branch_secretary_id = #{partyBranchSecretaryId,jdbcType=INTEGER},
+      party_branch_secretary = #{partyBranchSecretary,jdbcType=VARCHAR},
+      party_branch_organization_id = #{partyBranchOrganizationId,jdbcType=INTEGER},
+      party_branch_organization = #{partyBranchOrganization,jdbcType=VARCHAR},
+      party_branch_publicity_id = #{partyBranchPublicityId,jdbcType=INTEGER},
+      party_branch_publicity = #{partyBranchPublicity,jdbcType=VARCHAR},
+      party_branch_type = #{partyBranchType,jdbcType=INTEGER},
+      party_branch_del = #{partyBranchDel,jdbcType=INTEGER}
+    where party_id = #{partyId,jdbcType=INTEGER}
+  </update>
+  <update id="deleteById" parameterType="java.lang.Integer" >
+     update  party_branch_tab set party_branch_del = 0
+    where party_id = #{partyId,jdbcType=INTEGER}
+  </update>
+  <select id="selectListBySearch" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"></include> from party_branch_tab
+  	<where>
+  	  <if test="searchValue !=null and searchValue !=''">
+	    and (
+	    	party_branch_secretary LIKE concat('%',concat(#{searchValue},'%'))
+	    	or party_branch_organization   LIKE  concat('%',concat(#{searchValue},'%'))
+	    	or party_branch_publicity   LIKE  concat('%',concat(#{searchValue},'%'))
+	    )
+    </if>
+    </where>  
+  </select>
+   <!-- <resultMap type="java.util.HashMap" id="ListMap">
+    <result column="party_id" property="brID" jdbcType="INTEGER" />
+    <result column="party_branch_name" property="brName" jdbcType="VARCHAR" />
+   </resultMap> -->
+  <select id="getChildList"  parameterType="java.lang.Integer" resultType="java.util.HashMap">
+  	select party_id as brId,party_branch_name as brName from party_branch_tab where party_branch_del =1 and party_branch_type = #{partyBranchType,jdbcType=INTEGER}
+  </select>
+  <resultMap type="com.baobao.common.model.TotalBranchInfoModel" id="totalResultMap">
+  	<id column="jjnum" property="jjnum" jdbcType="INTEGER" />
+    <result column="ybnum" property="ybnum" jdbcType="INTEGER" />
+    <result column="zsnum" property="zsnum" jdbcType="INTEGER" />
+    <result column="party_branch_name" property="schBrName" jdbcType="VARCHAR" />
+    <collection property="partList" ofType="com.baobao.common.model.TotalPartInfoModel">
+		<id property="partBranchName" column="partBranchName"/>
+		<result property="yxnum" column="yxnum"/>
+		<collection property="InfoList" ofType="com.baobao.common.model.TotalInfoModel">
+			<id property="zbnum" column="zbnum"/>
+			<result property="branchName" column="branchName"/>
+		</collection>
+	</collection>
+  </resultMap>
+  <select id="countAllInfo" resultMap="totalResultMap">
+  	SELECT
+	a.*, b.*, c.*, d.*, e.partBranchName,
+	e.yxnum,
+	br.branchName,br.zbnum
+	FROM
+	(
+		SELECT
+			count(*) AS jjnum
+		FROM
+			member_tab
+		WHERE
+			member_type = '积极分子'
+		AND member_isdeleted = 1 AND member_INbranchID !=-1
+	) AS a,
+	(
+		SELECT
+			count(*) AS ybnum
+		FROM
+			member_tab
+		WHERE
+			member_type = '预备党员'
+		AND member_isdeleted = 1 AND member_INbranchID !=-1
+	) AS b,
+	(
+		SELECT
+			count(*) AS zsnum
+		FROM
+			member_tab
+		WHERE
+			member_type = '正式党员'
+		AND member_isdeleted = 1 AND member_INbranchID !=-1
+	) AS c,
+	(
+		SELECT
+			party_branch_name
+		FROM
+			party_branch_tab
+		WHERE
+			party_branch_type = 0
+	) d,
+	(
+		SELECT
+			c.party_branch_name AS partBranchName,
+			count(a.member_id) AS yxnum,
+			party_id
+		FROM
+			member_tab a
+		LEFT JOIN branch b ON a.member_INbranchID = b.branch_id
+		LEFT JOIN party_branch_tab c ON b.branch_father_id = c.party_id
+		WHERE
+			a.member_isdeleted = 1 AND a.member_INbranchID !=-1
+		AND party_branch_type = 1
+		GROUP BY
+			c.party_id
+	) e
+	LEFT JOIN (
+	SELECT
+		count(member_id) AS zbnum,
+		branch_name as branchName,
+		branch_father_id
+	FROM
+		branch a
+	LEFT JOIN member_tab b ON a.branch_id = b.member_INbranchID
+	WHERE
+		b.member_isdeleted = 1 AND b.member_INbranchID !=-1
+	GROUP BY
+		branch_id
+	) br ON br.branch_father_id = e.party_id
+  </select>
+  <update id="updateBatch">
+  	update party_branch_tab set party_branch_del = 0 where party_id in(<foreach collection="list" item="id" separator=",">#{id}</foreach>)
+  </update>
+  
+  <select id="selectSchoolFaculty" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from party_branch_tab
+    where party_branch_del = 1 and party_branch_type=0
+  </select>
+  
+</mapper>

@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baobao.common.mapping.MemberInfoModelMapper" >
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.MemberInfoModel" >
+    <id column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="member_name" property="memberName" jdbcType="VARCHAR" />
+    <result column="member_sex" property="memberSex" jdbcType="VARCHAR" />
+    <result column="member_national" property="memberNational" jdbcType="VARCHAR" />
+    <result column="member_native" property="memberNative" jdbcType="VARCHAR" />
+    <result column="member_rddate" property="memberRddate" jdbcType="TIMESTAMP" />
+    <result column="member_zzdate" property="memberZzdate" jdbcType="TIMESTAMP" />
+    <result column="member_workunit" property="memberWorkunit" jdbcType="VARCHAR" />
+    <result column="member_job" property="memberJob" jdbcType="VARCHAR" />
+    <result column="member_IDcard" property="memberIdcard" jdbcType="VARCHAR" />
+    <result column="member_INbranchID" property="memberInbranchid" jdbcType="INTEGER" />
+    <result column="member_remark" property="memberRemark" jdbcType="VARCHAR" />
+    <result column="member_photoURL" property="memberPhotourl" jdbcType="VARCHAR" />
+    <result column="member_type" property="memberType" jdbcType="VARCHAR" />
+    <result column="member_tel" property="memberTel" jdbcType="VARCHAR" />
+    <result column="member_pass" property="memberPass" jdbcType="VARCHAR" />
+    <result column="member_birth" property="memberBirth" jdbcType="TIMESTAMP" />
+    <result column="member_isdeleted" property="memberIsDelete" jdbcType="INTEGER" />
+    <result column="branch_name" property="branchName" jdbcType="VARCHAR" />
+    <result column="branch_id" property="branchId" jdbcType="INTEGER" />
+    <result column="member_email" property="memberEmail" jdbcType="VARCHAR" />
+     <result column="member_edu" property="memberEdu" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    member_id, member_name, member_sex, member_national, member_native, member_rddate, 
+    member_zzdate, member_workunit, member_job, member_IDcard, member_INbranchID, member_remark, 
+    member_photoURL, member_type,member_tel,member_pass,member_birth,member_isdeleted,member_email,member_edu
+  </sql>
+  <sql id="BaseAll_Column_List" >
+    member_id, member_name, member_sex, member_national, member_native, member_rddate, 
+    member_zzdate, member_workunit, member_job, member_IDcard, member_INbranchID, member_remark, 
+    member_photoURL, member_type,member_tel,member_pass,member_birth,member_email,branch_name,member_edu
+  </sql>
+  
+  <sql id="UserBrief_Base_Column_List" >
+    member_id, member_name, member_sex, member_job, member_photoURL
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from member_tab
+    where member_id = #{memberId,jdbcType=INTEGER} and member_isdeleted = 1
+  </select>
+  <select id="selectMembersByPage" resultMap="BaseResultMap" parameterType="com.baobao.util.PageParamCommand">
+    select bc.branch_name,
+    <include refid="Base_Column_List" />
+    from member_tab LEFT JOIN branch bc 
+    on branch_id = member_INbranchID 
+    where member_isdeleted = 1 and member_INbranchID != -1
+    <if test="searchValue !=null and searchValue !=''">
+	    and (
+	    	member_name LIKE concat('%',concat(#{searchValue},'%'))
+	    	or member_IDcard   LIKE  concat('%',concat(#{searchValue},'%'))
+	    	or branch_name   LIKE  concat('%',concat(#{searchValue},'%'))
+	    	or member_type   LIKE  concat('%',concat(#{searchValue},'%'))
+	    	or member_job  LIKE  concat('%',concat(#{searchValue},'%'))
+	    	or member_tel  LIKE  concat('%',concat(#{searchValue},'%'))
+	    )
+    </if>
+    <if test="brId!=null and brId">
+    	and member_INbranchID =#{brId,jdbcType=INTEGER}
+    </if>
+    ORDER BY member_rddate
+  </select>
+  <select id="selectMembersByBrIdPage" resultMap="BaseResultMap" parameterType="com.baobao.util.PageParamCommand">
+    select bc.branch_name,
+    <include refid="Base_Column_List" />
+    from member_tab LEFT JOIN branch bc 
+    on branch_id = member_INbranchID 
+    where member_isdeleted = 1 and  member_INbranchID != -1
+    <if test="searchValue !=null and searchValue !=''">
+	    and (
+	    	member_name LIKE concat('%',concat(#{searchValue},'%'))
+	    	or member_IDcard   LIKE  concat('%',concat(#{searchValue},'%'))
+	    	or branch_name   LIKE  concat('%',concat(#{searchValue},'%'))
+	    	or member_type   LIKE  concat('%',concat(#{searchValue},'%'))
+	    	or member_job  LIKE  concat('%',concat(#{searchValue},'%'))
+	    	or member_tel  LIKE  concat('%',concat(#{searchValue},'%'))
+	    )
+    </if>
+    <if test="brIds!=null and brIds.size()!=0">
+     and branch_id in (<foreach collection="brIds" item="id" separator=",">#{id}</foreach>)
+    </if>
+    ORDER BY member_rddate
+  </select>
+   <select id="selectBranchBymemberId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select bc.branch_name,
+    <include refid="Base_Column_List" />
+    from member_tab LEFT JOIN branch bc 
+    on branch_id = member_INbranchID 
+    where member_isdeleted = 1 
+    and member_id = #{memberId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from member_tab
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.MemberInfoModel" >
+    insert into member_tab (member_id, member_name, member_sex, 
+      member_national, member_native, member_rddate, 
+      member_zzdate, member_workunit, member_job, 
+      member_IDcard, member_INbranchID, member_remark, 
+      member_photoURL, member_type,member_tel,member_pass,member_birth,member_isdeleted,member_edu)
+    values (#{memberId,jdbcType=INTEGER}, #{memberName,jdbcType=VARCHAR}, #{memberSex,jdbcType=VARCHAR}, 
+      #{memberNational,jdbcType=VARCHAR}, #{memberNative,jdbcType=VARCHAR}, #{memberRddate,jdbcType=TIMESTAMP}, 
+      #{memberZzdate,jdbcType=TIMESTAMP}, #{memberWorkunit,jdbcType=VARCHAR}, #{memberJob,jdbcType=VARCHAR}, 
+      #{memberIdcard,jdbcType=VARCHAR}, #{memberInbranchid,jdbcType=INTEGER}, #{memberRemark,jdbcType=VARCHAR}, 
+      #{memberPhotourl,jdbcType=VARCHAR}, #{memberType,jdbcType=VARCHAR}, #{memberTel,jdbcType=VARCHAR},
+      #{memberPass,jdbcType=VARCHAR}, #{memberBirth,jdbcType=TIMESTAMP},#{memberIsDelete,jdbcType=INTEGER},
+      #{memberEmail,jdbcType=VARCHAR},#{memberEdu,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.MemberInfoModel" >
+    insert into member_tab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="memberName != null" >
+        member_name,
+      </if>
+      <if test="memberSex != null" >
+        member_sex,
+      </if>
+      <if test="memberNational != null" >
+        member_national,
+      </if>
+      <if test="memberNative != null" >
+        member_native,
+      </if>
+      <if test="memberRddate != null" >
+        member_rddate,
+      </if>
+      <if test="memberZzdate != null" >
+        member_zzdate,
+      </if>
+      <if test="memberWorkunit != null" >
+        member_workunit,
+      </if>
+      <if test="memberJob != null" >
+        member_job,
+      </if>
+      <if test="memberIdcard != null" >
+        member_IDcard,
+      </if>
+      <if test="memberInbranchid != null" >
+        member_INbranchID,
+      </if>
+      <if test="memberRemark != null" >
+        member_remark,
+      </if>
+      <if test="memberPhotourl != null" >
+        member_photoURL,
+      </if>
+      <if test="memberType != null" >
+        member_type,
+      </if>
+      <if test="memberTel != null" >
+        member_tel,
+      </if>
+      <if test="memberPass != null" >
+        member_pass,
+      </if>
+      <if test="memberBirth != null" >
+        member_birth,
+      </if>
+      <if test="memberIsDelete != null" >
+        member_isdeleted,
+      </if>
+      <if test="memberEmail != null" >
+        member_email,
+      </if>
+      <if test="memberEdu != null" >
+        member_edu,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberName != null" >
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberSex != null" >
+        #{memberSex,jdbcType=VARCHAR},
+      </if>
+      <if test="memberNational != null" >
+        #{memberNational,jdbcType=VARCHAR},
+      </if>
+      <if test="memberNative != null" >
+        #{memberNative,jdbcType=VARCHAR},
+      </if>
+      <if test="memberRddate != null" >
+        #{memberRddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberZzdate != null" >
+        #{memberZzdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberWorkunit != null" >
+        #{memberWorkunit,jdbcType=VARCHAR},
+      </if>
+      <if test="memberJob != null" >
+        #{memberJob,jdbcType=VARCHAR},
+      </if>
+      <if test="memberIdcard != null" >
+        #{memberIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="memberInbranchid != null" >
+        #{memberInbranchid,jdbcType=INTEGER},
+      </if>
+      <if test="memberRemark != null" >
+        #{memberRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="memberPhotourl != null" >
+        #{memberPhotourl,jdbcType=VARCHAR},
+      </if>
+      <if test="memberType != null" >
+        #{memberType,jdbcType=VARCHAR},
+      </if>
+      <if test="memberTel != null" >
+        #{memberTel,jdbcType=VARCHAR},
+      </if>
+      <if test="memberPass != null" >
+        #{memberPass,jdbcType=VARCHAR},
+      </if>
+      <if test="memberBirth != null" >
+        #{memberBirth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberIsDelete != null" >
+        #{memberIsDelete,jdbcType=INTEGER},
+      </if>
+      <if test="memberEmail != null" >
+        #{memberEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="memberEdu != null" >
+        #{memberEdu,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.MemberInfoModel" >
+    update member_tab
+    <set >
+      <if test="memberName != null" >
+        member_name = #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberSex != null" >
+        member_sex = #{memberSex,jdbcType=VARCHAR},
+      </if>
+      <if test="memberNational != null" >
+        member_national = #{memberNational,jdbcType=VARCHAR},
+      </if>
+      <if test="memberNative != null" >
+        member_native = #{memberNative,jdbcType=VARCHAR},
+      </if>
+      <if test="memberRddate != null" >
+        member_rddate = #{memberRddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberZzdate != null" >
+        member_zzdate = #{memberZzdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberWorkunit != null" >
+        member_workunit = #{memberWorkunit,jdbcType=VARCHAR},
+      </if>
+      <if test="memberJob != null" >
+        member_job = #{memberJob,jdbcType=VARCHAR},
+      </if>
+      <if test="memberIdcard != null" >
+        member_IDcard = #{memberIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="memberInbranchid != null" >
+        member_INbranchID = #{memberInbranchid,jdbcType=INTEGER},
+      </if>
+      <if test="memberRemark != null" >
+        member_remark = #{memberRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="memberPhotourl != null" >
+        member_photoURL = #{memberPhotourl,jdbcType=VARCHAR},
+      </if>
+      <if test="memberType != null" >
+        member_type = #{memberType,jdbcType=VARCHAR},
+      </if>
+      <if test="memberTel != null" >
+        member_tel= #{memberTel,jdbcType=VARCHAR},
+      </if>
+      <if test="memberPass != null" >
+        member_pass = #{memberPass,jdbcType=VARCHAR},
+      </if>
+      <if test="memberBirth != null" >
+        member_birth = #{memberBirth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberIsDelete != null" >
+        member_isdeleted = #{memberIsDelete,jdbcType=INTEGER},
+      </if>
+       <if test="memberEmail != null" >
+        member_email = #{memberEmail,jdbcType=VARCHAR},
+      </if>
+       <if test="memberEdu != null" >
+        member_edu = #{memberEdu,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.MemberInfoModel" >
+    update member_tab
+    set member_name = #{memberName,jdbcType=VARCHAR},
+      member_sex = #{memberSex,jdbcType=VARCHAR},
+      member_national = #{memberNational,jdbcType=VARCHAR},
+      member_native = #{memberNative,jdbcType=VARCHAR},
+      member_rddate = #{memberRddate,jdbcType=TIMESTAMP},
+      member_zzdate = #{memberZzdate,jdbcType=TIMESTAMP},
+      member_workunit = #{memberWorkunit,jdbcType=VARCHAR},
+      member_job = #{memberJob,jdbcType=VARCHAR},
+      member_IDcard = #{memberIdcard,jdbcType=VARCHAR},
+      member_INbranchID = #{memberInbranchid,jdbcType=INTEGER},
+      member_remark = #{memberRemark,jdbcType=VARCHAR},
+      member_photoURL = #{memberPhotourl,jdbcType=VARCHAR},
+      member_type = #{memberType,jdbcType=VARCHAR},
+      member_tel= #{memberTel,jdbcType=VARCHAR},
+      member_pass = #{memberPass,jdbcType=VARCHAR},
+      member_birth = #{memberBirth,jdbcType=TIMESTAMP},
+      member_isdeleted = #{memberIsDelete,jdbcType=INTEGER},
+      member_email = #{memberEmail,jdbcType=VARCHAR},
+      member_edu = #{memberEdu,jdbcType=VARCHAR}
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </update>
+  
+   <select id="login" resultMap="BaseResultMap" parameterType="com.baobao.common.model.MemberInfoModel" >
+    select 
+    <include refid="BaseAll_Column_List"/>
+	from member_tab LEFT JOIN branch on branch_id = member_INbranchID 
+    where 1=1  and member_tel = #{memberTel,jdbcType=VARCHAR} and member_isdeleted=1
+  </select>
+  <select id="getBranchUsersInfoByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	select
+	<include refid="UserBrief_Base_Column_List"/>
+	from member_tab 
+	where member_isdeleted=1 and member_tab.member_INbranchID=(select member_tab.member_INbranchID from
+	member_tab where member_id=#{userId,jdbcType=INTEGER})
+  </select>
+  <select id="getbranchName" resultMap="BaseResultMap" parameterType="com.baobao.common.model.MemberInfoModel" >
+   	select DISTINCT(bc.branch_name) ,bc.branch_id from  branch bc where bc.br_isdeleted=0
+  </select>
+  <select id="getbranchById" resultMap="BaseResultMap" parameterType="com.baobao.common.model.MemberInfoModel" >
+   	select DISTINCT(bc.branch_name) ,bc.branch_id from  branch bc where bc.br_isdeleted=0 and branch_id in (<foreach collection="list" item="id" separator=",">#{id}</foreach>)
+  </select>
+  <select id="findMemberTel" resultType="java.lang.String" >
+   	select member_tel from member_tab where member_tel = #{memberTel,jdbcType=VARCHAR} and member_isdeleted=1
+  </select>
+  
+   <select id="getUserInfoByUserId" resultMap="BaseResultMap" >
+	select
+	<include refid="BaseAll_Column_List"/>
+	from member_tab LEFT JOIN branch on branch_id = member_INbranchID where 1=1
+	and member_id=#{userId,jdbcType=VARCHAR} and member_isdeleted=1
+  </select>
+  
+   <select id="getMemberPhone" resultType="java.lang.String" >
+	select mt.member_tel from member_tab mt where member_isdeleted=1 and member_INbranchID!=-1
+  </select>
+  <select id="getPayName" resultType="java.lang.String">
+  	select member_name from member_tab where member_isdeleted = 1 and member_INbranchID!=-1
+  	<if test="list!=null and list.size()>0">
+  		and member_INbranchID in(<foreach collection="list" item="id" separator=",">#{id}</foreach>)
+  	</if>
+  </select>
+  <select id="getMemberName" resultMap="BaseResultMap">
+  select member_id,member_name from member_tab where 
+  member_isdeleted=1 and member_INbranchID!=-1 and 
+  member_id not in (select member_role_tab.relation_member_id from member_role_tab )
+  <if test="brId!=null">
+  and	member_INbranchID = #{brId}
+  </if>
+  <if test="brIds!=null and brIds.size()>0">
+  and member_INbranchID in(<foreach collection="brIds" item="id" separator=",">#{id}</foreach>)
+  </if>
+  </select>
+  <insert id ="importMemberExcel" parameterType="java.util.List" >
+    insert into member_tab  (member_name, member_edu, member_sex, member_tel,
+      member_national, member_native, member_rddate, 
+      member_zzdate, member_birth, member_workunit, member_job, 
+      member_IDcard, member_INbranchID, member_type,member_pass) values
+    <foreach collection ="list" item="miModel" index= "index" separator =",">
+       (
+       	  #{miModel.memberName,jdbcType=VARCHAR}, #{miModel.memberEdu,jdbcType=VARCHAR},
+		  #{miModel.memberSex,jdbcType=VARCHAR}, #{miModel.memberTel,jdbcType=VARCHAR}, 
+		  #{miModel.memberNational,jdbcType=VARCHAR} , 
+	      #{miModel.memberNative,jdbcType=VARCHAR}, #{miModel.memberRddate,jdbcType=TIMESTAMP}, 
+	      #{miModel.memberZzdate,jdbcType=TIMESTAMP}, #{miModel.memberBirth,jdbcType=TIMESTAMP},
+	      #{miModel.memberWorkunit,jdbcType=VARCHAR}, #{miModel.memberJob,jdbcType=VARCHAR}, 
+	      #{miModel.memberIdcard,jdbcType=VARCHAR}, #{miModel.memberInbranchid,jdbcType=INTEGER},
+	      #{miModel.memberType,jdbcType=VARCHAR}, #{miModel.memberPass,jdbcType=VARCHAR}
+	   )
+   </foreach >
+  </insert >
+  <update id="changeJobByName" parameterType="com.baobao.common.model.MemberInfoModel">
+  		update member_tab set member_job = #{memberJob,jdbcType=VARCHAR} where  member_name =  #{memberName,jdbcType=VARCHAR}
+  </update>
+  <update id="changeJobById" parameterType="com.baobao.common.model.MemberInfoModel">
+  		update member_tab set member_job = #{memberJob,jdbcType=VARCHAR} where  member_id =  #{memberId,jdbcType=INTEGER}
+  </update>
+  <update id="updateJob" parameterType="com.baobao.common.model.MemberInfoModel">
+  		update member_tab set member_job = #{memberJob,jdbcType=VARCHAR} where member_INbranchID = #{memberInbranchid,jdbcType=INTEGER}
+  </update>
+  <update id="updateJobByIds" >
+  		update member_tab set member_job = '普通成员' where member_id in (<foreach collection="list" item="id" separator=",">#{id}</foreach>)
+  </update>
+  <update id="deleteMembersByBrId">
+  		update member_tab set member_isdeleted = 2 where member_INbranchID =#{memberInbranchid,jdbcType=INTEGER}
+  </update>
+  <select id="getUIdByPhone" parameterType="java.lang.Integer" resultType="java.lang.String">
+  		select member_tel from  member_tab where member_id  = #{memberId,jdbcType=INTEGER} and member_isdeleted=1
+  </select>
+   <resultMap id="userBreif" type="com.baobao.common.model.UserBriefModel">
+    <id column="member_id" property="id" jdbcType="INTEGER" />
+    <result column="member_name" property="name" jdbcType="VARCHAR" />
+    <result column="member_sex" property="gender" jdbcType="VARCHAR" />
+    <result column="member_job" property="rolesName" jdbcType="VARCHAR" />
+    <result column="member_photoURL" property="iconUrl" jdbcType="VARCHAR" />
+    <result column="member_type" property="partyClassificationName" jdbcType="VARCHAR" />
+    <result column="branch_id" property="branchId" jdbcType="INTEGER" />
+    <result column="branch_name" property="partyOrganizationName" jdbcType="VARCHAR" />
+    <result column="member_pass" property="userPass" jdbcType="VARCHAR" />
+  </resultMap>
+   <resultMap id="InstiModel" type="com.baobao.common.model.InstitutionsModel">
+    <result column="party_id" property="brId" jdbcType="INTEGER" />
+    <result column="party_branch_name" property="brName" jdbcType="VARCHAR" />
+    <result column="relation_role" property="grade" jdbcType="INTEGER" />
+    <result column="party_job" property="brRolesName" jdbcType="INTEGER" />
+  </resultMap>
+   <resultMap  id="newModelInfo" type="com.baobao.common.model.UserInfoAll">
+   <association property="userBrief" javaType="com.baobao.common.model.UserBriefModel" 
+resultMap="com.baobao.common.mapping.MemberInfoModelMapper.userBreif"></association>
+   <association property="institutions" javaType="com.baobao.common.model.InstitutionsModel"
+resultMap="com.baobao.common.mapping.MemberInfoModelMapper.InstiModel"></association>
+  </resultMap>
+  <select id="LoginGetInfo" parameterType="java.lang.String" resultMap="newModelInfo">
+  		select member_id,member_name,member_sex,member_job,member_photoURL,member_type,branch_id,branch_name,party_id,party_branch_name,ifnull(relation_role,1)as relation_role,
+  		member_job as party_job,member_pass from member_tab a left join branch b on a.member_INbranchID = b.branch_id left join member_role_tab c
+  		on a.member_id = c.relation_member_id left join party_branch_tab d on   c.relation_part_branch_id = d.party_id
+  		where member_tel= #{memberTel,jdbcType=VARCHAR} and member_isdeleted = 1
+  </select>
+  <select id="getChildInfo" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+  	select member_id as brId,member_name as brName from member_tab where member_INbranchID = #{memberInbranchid,jdbcType=INTEGER} and member_isdeleted = 1
+  </select>
+  <select id="getAllMembers" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"></include> from member_tab where member_isdeleted = 1 and member_INbranchID!=-1
+  </select>
+  <select id="selectByAdminTel" resultMap="BaseResultMap">
+  	select  <include refid="Base_Column_List"></include> from member_tab where member_isdeleted = 1 and member_tel =#{memberTel,jdbcType=VARCHAR} and member_INbranchID =-1
+  </select>
+  <update id="deletedByBatch">
+  	update  member_tab  set member_isdeleted = 2 where member_id in (<foreach collection="list" item="id" separator=",">#{id}</foreach>)
+  </update>
+  <select id="getMembersByIds"  resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"></include> from member_tab where member_isdeleted = 1 and member_id in (<foreach collection="list" item="id" separator=",">#{id}</foreach>)
+  </select>
+  <select id="getTelByIds" resultType="java.lang.String">
+  	select member_tel from member_tab where member_isdeleted = 1 and member_INbranchID!=-1 and member_INbranchID in (<foreach collection="list" item="id" separator=",">#{id}</foreach>)
+  </select>
+  <select id="getTelByName" resultType="java.lang.String">
+  		select member_tel from member_tab where member_isdeleted = 1 and member_INbranchID!=-1 and member_name =#{memberName}
+  </select>
+  <select id="getMemIdByBrId" resultType="java.lang.Integer">
+  		select member_id from member_tab where member_INbranchID =#{memberInbranchid,jdbcType=INTEGER} and member_isdeleted = 1
+  </select>
+  <select id="getPayTelName" resultType="java.util.Map">
+  	select member_name,member_tel from member_tab where member_isdeleted = 1 and member_INbranchID!=-1
+  	<if test="list!=null and list.size()>0">
+  		and member_INbranchID in(<foreach collection="list" item="id" separator=",">#{id}</foreach>)
+  	</if>
+  </select>
+  
+  <update id="cancleJob" parameterType="java.lang.Integer">
+  	update member_tab set member_job = null where member_id = #{memberId}
+  </update>
+</mapper>

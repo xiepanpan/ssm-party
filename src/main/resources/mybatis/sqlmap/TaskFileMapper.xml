@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baobao.common.mapping.TaskFileMapper">
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.TaskFile">
+    <id column="task_file_id" jdbcType="INTEGER" property="taskFileId" />
+    <result column="task_file_name" jdbcType="VARCHAR" property="taskFileName" />
+    <result column="task_file_url" jdbcType="VARCHAR" property="taskFileUrl" />
+    <result column="task_file_size" jdbcType="VARCHAR" property="taskFileSize" />
+    <result column="task_file_belong" jdbcType="INTEGER" property="taskFileBelong" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    task_file_id, task_file_name, task_file_url, task_file_size, task_file_belong
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from task_file
+    where task_file_id = #{taskFileId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from task_file
+    where task_file_id = #{taskFileId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.TaskFile">
+    insert into task_file (task_file_id, task_file_name, task_file_url, 
+      task_file_size, task_file_belong)
+    values (#{taskFileId,jdbcType=INTEGER}, #{taskFileName,jdbcType=VARCHAR}, #{taskFileUrl,jdbcType=VARCHAR}, 
+      #{taskFileSize,jdbcType=VARCHAR}, #{taskFileBelong,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertList">
+    insert into task_file (task_file_id, task_file_name, task_file_url, 
+      task_file_belong)
+    values 
+    	<foreach collection="list" item="file" separator=",">
+    	(#{file.taskFileId,jdbcType=INTEGER}, #{file.taskFileName,jdbcType=VARCHAR}, #{file.taskFileUrl,jdbcType=VARCHAR}, 
+      #{file.taskFileBelong,jdbcType=INTEGER})
+    	</foreach>
+    
+  </insert>
+  <insert id="insertTask">
+    update  task_file set task_file_belong = #{taskId,jdbcType=INTEGER}
+    where task_file_id in <foreach collection="fileIds" item="id" open="(" close=")" separator=",">#{id}</foreach>
+    
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.TaskFile">
+    insert into task_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskFileId != null">
+        task_file_id,
+      </if>
+      <if test="taskFileName != null">
+        task_file_name,
+      </if>
+      <if test="taskFileUrl != null">
+        task_file_url,
+      </if>
+      <if test="taskFileSize != null">
+        task_file_size,
+      </if>
+      <if test="taskFileBelong != null">
+        task_file_belong,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskFileId != null">
+        #{taskFileId,jdbcType=INTEGER},
+      </if>
+      <if test="taskFileName != null">
+        #{taskFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskFileUrl != null">
+        #{taskFileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="taskFileSize != null">
+        #{taskFileSize,jdbcType=VARCHAR},
+      </if>
+      <if test="taskFileBelong != null">
+        #{taskFileBelong,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.TaskFile">
+    update task_file
+    <set>
+      <if test="taskFileName != null">
+        task_file_name = #{taskFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskFileUrl != null">
+        task_file_url = #{taskFileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="taskFileSize != null">
+        task_file_size = #{taskFileSize,jdbcType=VARCHAR},
+      </if>
+      <if test="taskFileBelong != null">
+        task_file_belong = #{taskFileBelong,jdbcType=INTEGER},
+      </if>
+    </set>
+    where task_file_id = #{taskFileId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.TaskFile">
+    update task_file
+    set task_file_name = #{taskFileName,jdbcType=VARCHAR},
+      task_file_url = #{taskFileUrl,jdbcType=VARCHAR},
+      task_file_size = #{taskFileSize,jdbcType=VARCHAR},
+      task_file_belong = #{taskFileBelong,jdbcType=INTEGER}
+    where task_file_id = #{taskFileId,jdbcType=INTEGER}
+  </update>
+</mapper>

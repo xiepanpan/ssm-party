@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baobao.common.mapping.NewsInfoModelMapper" >
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.NewsInfoModel" >
+    <id column="tid" property="tid" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="readCount" property="readcount" jdbcType="INTEGER" />
+    <result column="releaseTime" property="releasetime" jdbcType="TIMESTAMP" />
+  	<result column="news_context" property="newsContext" jdbcType="LONGVARCHAR" />
+    <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="news_type" property="newsType" jdbcType="INTEGER" />
+    <result column="detailspage_url" property="detailspageUrl" jdbcType="VARCHAR" />
+    <result column="heat_num" property="heatNum" jdbcType="INTEGER" />
+    <result column="heat_num" property="heatNum" jdbcType="INTEGER" />
+    <result column="t_cid" property="tCid" jdbcType="INTEGER" />
+    <result column="t_isdeleted" property="tIsdeleted" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    tid, title, readCount, releaseTime, news_context, img_url, news_type, detailspage_url,heat_num,t_cid,t_isdeleted
+  </sql>
+  <select id="selectNewsByType" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select <include refid="Base_Column_List" />
+    from news_tab
+    where news_type = #{newsType,jdbcType=INTEGER} and t_isdeleted = 0 order by releaseTime desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from news_tab
+    where tid = #{tid,jdbcType=INTEGER}
+    and t_isdeleted = 0 order by releaseTime desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from news_tab
+    where tid = #{tid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.NewsInfoModel" >
+    insert into news_tab (tid, title, readCount, 
+      releaseTime, news_context, img_url, 
+      news_type, detailspage_url,heat_num,t_cid,t_isdeleted)
+    values (#{tid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{readcount,jdbcType=INTEGER}, 
+      #{releasetime,jdbcType=TIMESTAMP}, #{newsContext,jdbcType=LONGVARCHAR}, #{imgUrl,jdbcType=VARCHAR}, 
+      #{newsType,jdbcType=INTEGER}, #{detailspageUrl,jdbcType=VARCHAR},#{heatNum,jdbcType=INTEGER},
+      #{tCid,jdbcType=INTEGER},#{tIsdeleted,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.NewsInfoModel" >
+    insert into news_tab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tid != null" >
+        tid,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="readcount != null" >
+        readCount,
+      </if>
+      <if test="releasetime != null" >
+        releaseTime,
+      </if>
+      <if test="newsContext != null" >
+        news_context,
+      </if>
+      <if test="imgUrl != null" >
+        img_url,
+      </if>
+      <if test="newsType != null" >
+        news_type,
+      </if>
+      <if test="detailspageUrl != null" >
+        detailspage_url,
+      </if>
+      <if test="heatNum != null" >
+        heat_num,
+      </if>
+      <if test="tCid != null" >
+        t_cid,
+      </if>
+      <if test="tIsdeleted != null" >
+        t_isdeleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tid != null" >
+        #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="readcount != null" >
+        #{readcount,jdbcType=INTEGER},
+      </if>
+      <if test="releasetime != null" >
+        #{releasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="newsContext != null" >
+       #{newsContext,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="newsType != null" >
+        #{newsType,jdbcType=INTEGER},
+      </if>
+      <if test="detailspageUrl != null" >
+        #{detailspageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="heatNum != null" >
+        #{heatNum,jdbcType=INTEGER},
+      </if>
+      <if test="tCid != null" >
+        #{tCid,jdbcType=INTEGER},
+      </if>
+      <if test="tIsdeleted != null" >
+        #{tIsdeleted,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.NewsInfoModel" >
+    update news_tab
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="readcount != null" >
+        readCount = #{readcount,jdbcType=INTEGER},
+      </if>
+      <if test="releasetime != null" >
+        releaseTime = #{releasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="newsContext != null" >
+        news_context = #{newsContext,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="imgUrl != null" >
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="newsType != null" >
+        news_type = #{newsType,jdbcType=INTEGER},
+      </if>
+      <if test="detailspageUrl != null" >
+        detailspage_url = #{detailspageUrl,jdbcType=VARCHAR},
+      </if>
+       <if test="heatNum != null" >
+        heat_num = #{heatNum,jdbcType=INTEGER},
+      </if>
+       <if test="tCid != null" >
+        t_cid = #{tCid,jdbcType=INTEGER},
+      </if>
+      <if test="tCid != null" >
+        t_isdeleted = #{tIsdeleted,jdbcType=INTEGER},
+      </if>
+    </set>
+    where tid = #{tid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.NewsInfoModel" >
+    update news_tab
+    set title = #{title,jdbcType=VARCHAR},
+      readCount = #{readcount,jdbcType=INTEGER},
+      releaseTime = #{releasetime,jdbcType=TIMESTAMP},
+      news_context = #{newsContext,jdbcType=LONGVARCHAR},
+      img_url = #{imgUrl,jdbcType=VARCHAR},
+      news_type = #{newsType,jdbcType=INTEGER},
+      detailspage_url = #{detailspageUrl,jdbcType=VARCHAR},
+      heat_num = #{heatNum,jdbcType=INTEGER},
+      t_cid = #{tCid,jdbcType=INTEGER},
+      t_isdeleted = #{tIsdeleted,jdbcType=INTEGER}
+    where tid = #{tid,jdbcType=INTEGER}
+  </update>
+
+  <update id="deleteBySoft" parameterType="java.lang.Integer" >
+    update news_tab
+    set t_isdeleted = 1
+    where tid = #{tid,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectAllNews" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from news_tab 
+    where 1 = 1
+    and t_isdeleted = 0
+     <if test="newsType == 1">
+    	and news_type = 21
+    </if>
+    <if test="newsType == 2">
+    	and news_type = 22
+    </if>
+    <if test="newsType == 3">
+    	and news_type = 31
+    </if>
+    <if test="newsType == 4">
+    	and news_type = 32
+    </if>
+    order by releaseTime desc
+  </select>
+  <select id="getNews" resultMap="BaseResultMap" parameterType="com.baobao.common.cmd.SearchCondition" >
+    select 
+    <include refid="Base_Column_List" />
+    from news_tab 
+    <where>
+     1=1 
+    <if test="tid !=null">
+    	and tid=#{tid,jdbcType=INTEGER}
+    </if>
+    <if test="newsType == 1">
+    	and news_type in(21,22)
+    </if>
+    <if test="newsType == 2">
+        and news_type in(31,32)
+    </if>
+    <if test="newsType == 3">
+        and img_url is not null
+    </if>
+    <if test="searchValue !=null and searchValue != ''">
+    	and title LIKE concat('%',concat(#{searchValue},'%'))
+    </if>
+    and t_isdeleted = 0
+    </where>
+   
+    order by releaseTime desc
+  </select>
+  <update id="deleteBatch">
+  update news_tab set t_isdeleted = 1 where tid in (<foreach collection="list" item="id" separator=",">#{id}</foreach>)
+  </update>
+</mapper>

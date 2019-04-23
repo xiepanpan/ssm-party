@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baobao.common.mapping.OpinionMapper">
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.Opinion">
+    <id column="opinion_id" jdbcType="INTEGER" property="opinionId" />
+    <result column="opinion_user_id" jdbcType="INTEGER" property="opinionUserId" />
+    <result column="opinion_content" jdbcType="VARCHAR" property="opinionContent" />
+    <result column="opinion_time" jdbcType="TIMESTAMP" property="opinionTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    opinion_id, opinion_user_id, opinion_content, opinion_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from opinion
+    where opinion_id = #{opinionId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from opinion
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from opinion
+    where opinion_id = #{opinionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.Opinion">
+    insert into opinion (opinion_id, opinion_user_id, opinion_content, 
+      opinion_time)
+    values (#{opinionId,jdbcType=INTEGER}, #{opinionUserId,jdbcType=INTEGER}, #{opinionContent,jdbcType=VARCHAR}, 
+      #{opinionTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.Opinion">
+    insert into opinion
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="opinionId != null">
+        opinion_id,
+      </if>
+      <if test="opinionUserId != null">
+        opinion_user_id,
+      </if>
+      <if test="opinionContent != null">
+        opinion_content,
+      </if>
+      <if test="opinionTime != null">
+        opinion_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="opinionId != null">
+        #{opinionId,jdbcType=INTEGER},
+      </if>
+      <if test="opinionUserId != null">
+        #{opinionUserId,jdbcType=INTEGER},
+      </if>
+      <if test="opinionContent != null">
+        #{opinionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="opinionTime != null">
+        #{opinionTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.Opinion">
+    update opinion
+    <set>
+      <if test="opinionUserId != null">
+        opinion_user_id = #{opinionUserId,jdbcType=INTEGER},
+      </if>
+      <if test="opinionContent != null">
+        opinion_content = #{opinionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="opinionTime != null">
+        opinion_time = #{opinionTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where opinion_id = #{opinionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.Opinion">
+    update opinion
+    set opinion_user_id = #{opinionUserId,jdbcType=INTEGER},
+      opinion_content = #{opinionContent,jdbcType=VARCHAR},
+      opinion_time = #{opinionTime,jdbcType=TIMESTAMP}
+    where opinion_id = #{opinionId,jdbcType=INTEGER}
+  </update>
+</mapper>

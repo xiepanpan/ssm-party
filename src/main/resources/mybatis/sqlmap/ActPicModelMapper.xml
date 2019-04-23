@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baobao.common.mapping.ActPicModelMapper" >
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.ActPicModel" >
+    <id column="act_pic_id" property="actPicId" jdbcType="INTEGER" />
+    <result column="act_pic_brid" property="actPicBrid" jdbcType="INTEGER" />
+    <result column="act_pic_actid" property="actPicActid" jdbcType="INTEGER" />
+    <result column="act_pic_url" property="actPicUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    act_pic_id, act_pic_brid, act_pic_actid, act_pic_url
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from act_pic_tab
+    where act_pic_id = #{actPicId,jdbcType=INTEGER}
+  </select>
+  <select id="selectImageByBrId" resultType="java.lang.String" parameterType="com.baobao.common.model.ActPicModel">
+  	select act_pic_url from act_pic_tab where act_pic_brid = #{actPicBrid,jdbcType=INTEGER} and act_pic_actid =#{actPicActid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from act_pic_tab
+    where act_pic_id = #{actPicId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByActId" parameterType="java.lang.Integer" >
+    delete from act_pic_tab
+    where act_pic_actid = #{actId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.ActPicModel" >
+    insert into act_pic_tab (act_pic_id, act_pic_brid, act_pic_actid, 
+      act_pic_url)
+    values (#{actPicId,jdbcType=INTEGER}, #{actPicBrid,jdbcType=INTEGER}, #{actPicActid,jdbcType=INTEGER}, 
+      #{actPicUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.ActPicModel" >
+    insert into act_pic_tab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="actPicId != null" >
+        act_pic_id,
+      </if>
+      <if test="actPicBrid != null" >
+        act_pic_brid,
+      </if>
+      <if test="actPicActid != null" >
+        act_pic_actid,
+      </if>
+      <if test="actPicUrl != null" >
+        act_pic_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="actPicId != null" >
+        #{actPicId,jdbcType=INTEGER},
+      </if>
+      <if test="actPicBrid != null" >
+        #{actPicBrid,jdbcType=INTEGER},
+      </if>
+      <if test="actPicActid != null" >
+        #{actPicActid,jdbcType=INTEGER},
+      </if>
+      <if test="actPicUrl != null" >
+        #{actPicUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.ActPicModel" >
+    update act_pic_tab
+    <set >
+      <if test="actPicBrid != null" >
+        act_pic_brid = #{actPicBrid,jdbcType=INTEGER},
+      </if>
+      <if test="actPicActid != null" >
+        act_pic_actid = #{actPicActid,jdbcType=INTEGER},
+      </if>
+      <if test="actPicUrl != null" >
+        act_pic_url = #{actPicUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where act_pic_id = #{actPicId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.ActPicModel" >
+    update act_pic_tab
+    set act_pic_brid = #{actPicBrid,jdbcType=INTEGER},
+      act_pic_actid = #{actPicActid,jdbcType=INTEGER},
+      act_pic_url = #{actPicUrl,jdbcType=VARCHAR}
+    where act_pic_id = #{actPicId,jdbcType=INTEGER}
+  </update>
+  <delete id="deleteByImgUrl" parameterType="java.lang.String">
+  	delete from act_pic_tab where act_pic_url = #{actPicUrl,jdbcType=VARCHAR}
+  </delete>
+</mapper>

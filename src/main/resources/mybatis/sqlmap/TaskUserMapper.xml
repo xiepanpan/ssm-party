@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baobao.common.mapping.TaskContactsMapper">
+	<resultMap type="com.baobao.common.model.andshow.Contacts" id="ContactsResultMap">
+		<result property="branchName" column="branch_name" jdbcType="VARCHAR"/>
+		<collection property="users" ofType="com.baobao.common.model.andshow.TaskUser">
+			<result property="userId" column="member_id" jdbcType="INTEGER"/>
+			<result property="userName" column="member_name" jdbcType="VARCHAR"/>
+			<result property="userPhone" column="member_tel" jdbcType="VARCHAR"/>
+		</collection>
+	</resultMap>
+	
+	<sql id="Contacts_List">
+		branch_name,member_id,member_name,member_tel
+	</sql>
+	<select id="getTaskContacts" resultMap="ContactsResultMap">
+		select <include refid="Contacts_List"></include> from  branch 
+		left join member_tab on branch_id = member_INbranchID	
+		where branch_id in <foreach collection="array" item="id" open="(" close=")" separator=",">#{id}</foreach>
+	</select>
+	
+</mapper>

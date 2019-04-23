@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baobao.common.mapping.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.baobao.common.model.Comment">
+    <id column="comment_id" jdbcType="INTEGER" property="commentId" />
+    <result column="comment_object_id" jdbcType="INTEGER" property="commentObjectId" />
+    <result column="comment_user_id" jdbcType="INTEGER" property="commentUserId" />
+    <result column="comment_content" jdbcType="VARCHAR" property="commentContent" />
+    <result column="comment_time" jdbcType="TIMESTAMP" property="commentTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    comment_id, comment_object_id, comment_user_id, comment_content, comment_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.baobao.common.model.Comment">
+    insert into comment (comment_id, comment_object_id, comment_user_id, 
+      comment_content, comment_time)
+    values (#{commentId,jdbcType=INTEGER}, #{commentObjectId,jdbcType=INTEGER}, #{commentUserId,jdbcType=INTEGER}, 
+      #{commentContent,jdbcType=VARCHAR}, #{commentTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.baobao.common.model.Comment">
+    insert into comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="commentId != null">
+        comment_id,
+      </if>
+      <if test="commentObjectId != null">
+        comment_object_id,
+      </if>
+      <if test="commentUserId != null">
+        comment_user_id,
+      </if>
+      <if test="commentContent != null">
+        comment_content,
+      </if>
+      <if test="commentTime != null">
+        comment_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="commentId != null">
+        #{commentId,jdbcType=INTEGER},
+      </if>
+      <if test="commentObjectId != null">
+        #{commentObjectId,jdbcType=INTEGER},
+      </if>
+      <if test="commentUserId != null">
+        #{commentUserId,jdbcType=INTEGER},
+      </if>
+      <if test="commentContent != null">
+        #{commentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="commentTime != null">
+        #{commentTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.baobao.common.model.Comment">
+    update comment
+    <set>
+      <if test="commentObjectId != null">
+        comment_object_id = #{commentObjectId,jdbcType=INTEGER},
+      </if>
+      <if test="commentUserId != null">
+        comment_user_id = #{commentUserId,jdbcType=INTEGER},
+      </if>
+      <if test="commentContent != null">
+        comment_content = #{commentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="commentTime != null">
+        comment_time = #{commentTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.baobao.common.model.Comment">
+    update comment
+    set comment_object_id = #{commentObjectId,jdbcType=INTEGER},
+      comment_user_id = #{commentUserId,jdbcType=INTEGER},
+      comment_content = #{commentContent,jdbcType=VARCHAR},
+      comment_time = #{commentTime,jdbcType=TIMESTAMP}
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+</mapper>
